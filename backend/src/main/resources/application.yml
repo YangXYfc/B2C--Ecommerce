@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: b2c-ecommerce-backend
+  datasource:
+    url: jdbc:h2:mem:jd_ecommerce;MODE=MySQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      mode: never
+  h2:
+    console:
+      enabled: false
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
