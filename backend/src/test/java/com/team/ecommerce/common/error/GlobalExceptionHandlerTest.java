@@ -30,12 +30,23 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.message").value("功能待实现: cart.list"));
     }
 
+    @Test
+    void missingRequiredHeaderReturnsInvalidArgument() throws Exception {
+        mockMvc.perform(get("/test/header"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("INVALID_ARGUMENT"));
+    }
+
     @RestController
     static class ThrowingController {
 
         @GetMapping("/test/not-implemented")
         void fail() {
             throw new FeatureNotImplementedException("cart.list");
+        }
+
+        @GetMapping("/test/header")
+        void header(@org.springframework.web.bind.annotation.RequestHeader("X-Test") String value) {
         }
     }
 }

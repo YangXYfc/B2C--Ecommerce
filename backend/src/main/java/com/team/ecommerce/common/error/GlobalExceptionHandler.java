@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,7 +19,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class,
-            HttpMessageNotReadableException.class, IllegalArgumentException.class})
+            HttpMessageNotReadableException.class, ServletRequestBindingException.class,
+            IllegalArgumentException.class})
     ResponseEntity<ApiResponse<Void>> handleInvalidArgument(Exception exception) {
         return response(HttpStatus.BAD_REQUEST, ErrorCode.INVALID_ARGUMENT, "请求参数不正确");
     }
