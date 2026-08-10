@@ -1,0 +1,17 @@
+# ============================================================
+# 后端通用配置
+# ============================================================
+spring:
+  application:
+    name: backend
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+
+# 数据访问层配置占位（接口阶段启用 MyBatis，见分工文档 2.2 节）
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
