@@ -10,6 +10,14 @@
         WHERE user_id = #{userId}
     </select>
 
+    <select id="findById" resultType="com.team.ecommerce.auth.entity.Merchant">
+        SELECT id, user_id AS userId, shop_name AS shopName, shop_logo AS shopLogo, description,
+               contact_phone AS contactPhone, status, audit_status AS auditStatus,
+               audit_remark AS auditRemark, created_at AS createdAt, updated_at AS updatedAt
+        FROM `merchant`
+        WHERE id = #{id}
+    </select>
+
     <insert id="insert" parameterType="com.team.ecommerce.auth.entity.Merchant"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `merchant` (user_id, shop_name, shop_logo, description, contact_phone, status, audit_status)

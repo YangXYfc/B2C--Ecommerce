@@ -6,6 +6,11 @@ spring:
     name: backend
   profiles:
     active: dev
+  # 上传限制：放宽到 10MB，业务上限 5MB 由 FileService 校验（契约 4.3）
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
 
 server:
   port: 8080
@@ -20,3 +25,7 @@ mybatis:
 jwt:
   secret: jd-ecommerce-demo-secret-key-2026-0123456789-abcdefghijklmnopqrstuvwxyz
   expiration: 86400000   # 24 小时（毫秒）
+
+# 图片上传目录（相对项目运行目录）
+upload:
+  dir: upload/

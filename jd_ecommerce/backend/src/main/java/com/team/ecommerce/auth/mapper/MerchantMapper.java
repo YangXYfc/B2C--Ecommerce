@@ -12,6 +12,8 @@ public interface MerchantMapper {
 
     Merchant findByUserId(@Param("userId") Long userId);
 
+    Merchant findById(@Param("id") Long id);
+
     /** 新增商家，成功后回填自增主键到 {@code merchant.id}。 */
     int insert(Merchant merchant);
 }

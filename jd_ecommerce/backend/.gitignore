@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 图片上传目录（运行时生成）###
+upload/

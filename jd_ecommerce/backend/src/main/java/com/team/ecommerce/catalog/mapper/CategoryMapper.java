@@ -14,4 +14,7 @@ public interface CategoryMapper {
 
     /** 按状态查询分类，按 sort 升序（越小越靠前）。 */
     List<Category> findByStatus(@Param("status") Integer status);
+
+    /** 按主键查询分类。 */
+    Category findById(@Param("id") Long id);
 }

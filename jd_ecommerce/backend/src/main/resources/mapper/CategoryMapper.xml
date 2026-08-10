@@ -14,4 +14,10 @@
         ORDER BY sort ASC, id ASC
     </select>
 
+    <select id="findById" resultType="com.team.ecommerce.catalog.entity.Category">
+        SELECT <include refid="allColumns"/>
+        FROM category
+        WHERE id = #{id}
+    </select>
+
 </mapper>

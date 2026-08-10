@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,6 +47,12 @@ public class GlobalExceptionHandler {
     public Result<Void> handleConstraint(ConstraintViolationException e, HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         return Result.error(ResultCode.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Result<Void> handleMaxUpload(MaxUploadSizeExceededException e, HttpServletResponse response) {
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        return Result.error(ResultCode.BAD_REQUEST, "文件大小不能超过5MB");
     }
 
     @ExceptionHandler(NoResourceFoundException.class)

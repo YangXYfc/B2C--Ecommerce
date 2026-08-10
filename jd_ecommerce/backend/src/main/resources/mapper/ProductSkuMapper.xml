@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.catalog.mapper.ProductSkuMapper">
+
+    <sql id="skuColumns">
+        id, product_id AS productId, sku_name AS skuName, price, original_price AS originalPrice,
+        stock, attributes, sku_image AS skuImage, status,
+        created_at AS createdAt, updated_at AS updatedAt
+    </sql>
+
+    <select id="findByProductId" resultType="com.team.ecommerce.catalog.entity.ProductSku">
+        SELECT <include refid="skuColumns"/>
+        FROM product_sku
+        WHERE product_id = #{productId} AND status = 1
+        ORDER BY id ASC
+    </select>
+
+    <select id="findById" resultType="com.team.ecommerce.catalog.entity.ProductSku">
+        SELECT <include refid="skuColumns"/>
+        FROM product_sku
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.team.ecommerce.catalog.entity.ProductSku"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product_sku (product_id, sku_name, price, original_price, stock, attributes, sku_image, status)
+        VALUES (#{productId}, #{skuName}, #{price}, #{originalPrice}, #{stock}, #{attributes}, #{skuImage}, #{status})
+    </insert>
+
+    <delete id="deleteByProductId">
+        DELETE FROM product_sku
+        WHERE product_id = #{productId}
+    </delete>
+
+    <update id="updateStock">
+        UPDATE product_sku
+        SET stock = #{stock}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
