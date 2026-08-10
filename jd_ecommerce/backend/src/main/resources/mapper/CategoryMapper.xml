@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.catalog.mapper.CategoryMapper">
+
+    <sql id="allColumns">
+        id, name, parent_id AS parentId, sort, icon, status,
+        created_at AS createdAt, updated_at AS updatedAt
+    </sql>
+
+    <select id="findByStatus" resultType="com.team.ecommerce.catalog.entity.Category">
+        SELECT <include refid="allColumns"/>
+        FROM category
+        WHERE status = #{status}
+        ORDER BY sort ASC, id ASC
+    </select>
+
+</mapper>

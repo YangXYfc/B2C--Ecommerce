@@ -37,11 +37,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .maxAge(3600);
     }
 
-    /** JWT 拦截：除注册/登录外，/api/** 全部要求登录。 */
+    /** JWT 拦截：除注册/登录及公开接口外，/api/** 全部要求登录。 */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtAuthInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/register", "/api/auth/login");
+                .excludePathPatterns("/api/auth/register", "/api/auth/login", "/api/categories");
     }
 }
