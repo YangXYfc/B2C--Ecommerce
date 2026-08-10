@@ -65,6 +65,13 @@
         WHERE id = #{id}
     </select>
 
+    <select id="findPending" resultType="com.team.ecommerce.catalog.entity.Product">
+        SELECT <include refid="productColumns"/>
+        FROM product
+        WHERE status = 0
+        ORDER BY created_at DESC, id DESC
+    </select>
+
     <insert id="insert" parameterType="com.team.ecommerce.catalog.entity.Product"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO product (merchant_id, category_id, name, subtitle, main_image, sub_images,

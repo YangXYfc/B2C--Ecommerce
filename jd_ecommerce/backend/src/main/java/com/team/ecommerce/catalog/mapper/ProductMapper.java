@@ -37,6 +37,9 @@ public interface ProductMapper {
 
     Product findById(@Param("id") Long id);
 
+    /** 待审核商品列表（status=0，创建时间倒序，供平台审核 8.1）。 */
+    List<Product> findPending();
+
     /** 新增商品，成功后回填自增主键到 {@code product.id}。 */
     int insert(Product product);
 
