@@ -33,4 +33,21 @@
         WHERE id = #{id}
     </update>
 
+    <select id="findPending" resultType="com.team.ecommerce.auth.entity.Merchant">
+        SELECT id, user_id AS userId, shop_name AS shopName, shop_logo AS shopLogo, description,
+               contact_phone AS contactPhone, status, audit_status AS auditStatus,
+               audit_remark AS auditRemark, created_at AS createdAt, updated_at AS updatedAt
+        FROM `merchant`
+        WHERE audit_status = 0
+        ORDER BY id ASC
+    </select>
+
+    <update id="updateAudit">
+        UPDATE `merchant`
+        SET audit_status = #{auditStatus},
+            status = #{status},
+            audit_remark = #{auditRemark}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

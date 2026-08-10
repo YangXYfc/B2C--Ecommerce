@@ -47,4 +47,58 @@
         WHERE id = #{id}
     </update>
 
+    <!-- 6.1 用户列表列：不返回密码 -->
+    <sql id="listColumns">
+        id, username, nickname, phone, email, role, status,
+        created_at AS createdAt
+    </sql>
+
+    <select id="findPage" resultType="com.team.ecommerce.auth.entity.User">
+        SELECT <include refid="listColumns"/>
+        FROM `user`
+        WHERE 1 = 1
+        <if test="keyword != null and keyword != ''">
+            AND (username LIKE CONCAT('%', #{keyword}, '%')
+                 OR nickname LIKE CONCAT('%', #{keyword}, '%')
+                 OR phone LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="role != null and role != ''">
+            AND role = #{role}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY id ASC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*)
+        FROM `user`
+        WHERE 1 = 1
+        <if test="keyword != null and keyword != ''">
+            AND (username LIKE CONCAT('%', #{keyword}, '%')
+                 OR nickname LIKE CONCAT('%', #{keyword}, '%')
+                 OR phone LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="role != null and role != ''">
+            AND role = #{role}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <update id="updateStatus">
+        UPDATE `user`
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateRole">
+        UPDATE `user`
+        SET role = #{role}
+        WHERE id = #{id}
+    </update>
+
 </mapper>
