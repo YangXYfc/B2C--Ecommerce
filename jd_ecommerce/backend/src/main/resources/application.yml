@@ -15,3 +15,8 @@ mybatis:
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+# JWT 配置（HS256 密钥 >= 32 字节）
+jwt:
+  secret: jd-ecommerce-demo-secret-key-2026-0123456789-abcdefghijklmnopqrstuvwxyz
+  expiration: 86400000   # 24 小时（毫秒）

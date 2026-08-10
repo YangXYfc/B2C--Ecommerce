@@ -10,13 +10,13 @@ USE `jd_ecommerce`;
 -- ============================================================
 INSERT INTO `user` (`id`, `username`, `password`, `phone`, `email`, `nickname`, `gender`, `status`, `role`) VALUES
 -- 密码均为 123456 的 BCrypt 加密
-(1, 'admin',     '$2a$10$N.zmdr9k7uOCQb37B9tJdO5mBpK.fk1a.jf1s8g/3UvK9pJzQf1a', '13800000001', 'admin@jd-demo.com',     '系统管理员', 1, 1, 'ADMIN'),
-(2, 'merchant1', '$2a$10$N.zmdr9k7uOCQb37B9tJdO5mBpK.fk1a.jf1s8g/3UvK9pJzQf1a', '13800000002', 'merchant1@jd-demo.com', '数码旗舰店', 1, 1, 'MERCHANT'),
-(3, 'merchant2', '$2a$10$N.zmdr9k7uOCQb37B9tJdO5mBpK.fk1a.jf1s8g/3UvK9pJzQf1a', '13800000003', 'merchant2@jd-demo.com', '服饰优选店', 2, 1, 'MERCHANT'),
-(4, 'user1',     '$2a$10$N.zmdr9k7uOCQb37B9tJdO5mBpK.fk1a.jf1s8g/3UvK9pJzQf1a', '13800000004', 'user1@jd-demo.com',     '张三',       1, 1, 'USER'),
-(5, 'user2',     '$2a$10$N.zmdr9k7uOCQb37B9tJdO5mBpK.fk1a.jf1s8g/3UvK9pJzQf1a', '13800000005', 'user2@jd-demo.com',     '李四',       2, 1, 'USER'),
-(6, 'user3',     '$2a$10$N.zmdr9k7uOCQb37B9tJdO5mBpK.fk1a.jf1s8g/3UvK9pJzQf1a', '13800000006', 'user3@jd-demo.com',     '王五',       1, 1, 'USER'),
-(7, 'merchant3', '$2a$10$N.zmdr9k7uOCQb37B9tJdO5mBpK.fk1a.jf1s8g/3UvK9pJzQf1a', '13800000007', 'merchant3@jd-demo.com', '待审核商家', 1, 1, 'MERCHANT');
+(1, 'admin',     '$2a$10$OmbS4VWAprP3Mj9JUeMDDOMBoUSHmMA82bReO4GCbuhdTDcUGAXQO', '13800000001', 'admin@jd-demo.com',     '系统管理员', 1, 1, 'ADMIN'),
+(2, 'merchant1', '$2a$10$OmbS4VWAprP3Mj9JUeMDDOMBoUSHmMA82bReO4GCbuhdTDcUGAXQO', '13800000002', 'merchant1@jd-demo.com', '数码旗舰店', 1, 1, 'MERCHANT'),
+(3, 'merchant2', '$2a$10$OmbS4VWAprP3Mj9JUeMDDOMBoUSHmMA82bReO4GCbuhdTDcUGAXQO', '13800000003', 'merchant2@jd-demo.com', '服饰优选店', 2, 1, 'MERCHANT'),
+(4, 'user1',     '$2a$10$OmbS4VWAprP3Mj9JUeMDDOMBoUSHmMA82bReO4GCbuhdTDcUGAXQO', '13800000004', 'user1@jd-demo.com',     '张三',       1, 1, 'USER'),
+(5, 'user2',     '$2a$10$OmbS4VWAprP3Mj9JUeMDDOMBoUSHmMA82bReO4GCbuhdTDcUGAXQO', '13800000005', 'user2@jd-demo.com',     '李四',       2, 1, 'USER'),
+(6, 'user3',     '$2a$10$OmbS4VWAprP3Mj9JUeMDDOMBoUSHmMA82bReO4GCbuhdTDcUGAXQO', '13800000006', 'user3@jd-demo.com',     '王五',       1, 1, 'USER'),
+(7, 'merchant3', '$2a$10$OmbS4VWAprP3Mj9JUeMDDOMBoUSHmMA82bReO4GCbuhdTDcUGAXQO', '13800000007', 'merchant3@jd-demo.com', '待审核商家', 1, 1, 'MERCHANT');
 
 -- ============================================================
 -- 2. 商家数据
