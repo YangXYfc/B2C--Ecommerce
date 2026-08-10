@@ -12,7 +12,9 @@ import com.team.ecommerce.common.ResultCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 平台商家审核服务（7.1 / 7.2 / 7.3）。
@@ -26,10 +28,13 @@ public class AdminMerchantService {
 
     private final MerchantMapper merchantMapper;
     private final UserMapper userMapper;
+    private final AdminLogService adminLogService;
 
-    public AdminMerchantService(MerchantMapper merchantMapper, UserMapper userMapper) {
+    public AdminMerchantService(MerchantMapper merchantMapper, UserMapper userMapper,
+                                AdminLogService adminLogService) {
         this.merchantMapper = merchantMapper;
         this.userMapper = userMapper;
+        this.adminLogService = adminLogService;
     }
 
     /** 7.1 待审核商家列表（无分页，纯数组）。 */
@@ -65,13 +70,21 @@ public class AdminMerchantService {
         if (merchant.getAuditStatus() == null || merchant.getAuditStatus() != AUDIT_PENDING) {
             throw new BizException(ResultCode.BAD_REQUEST, "商家不在待审核状态");
         }
+        int auditStatus;
         if (approve) {
             merchantMapper.updateAudit(id, AUDIT_APPROVED, 1, remark);
             userMapper.updateRole(merchant.getUserId(), "MERCHANT");
-            return new MerchantAuditVO(id, AUDIT_APPROVED, remark);
+            auditStatus = AUDIT_APPROVED;
+        } else {
+            merchantMapper.updateAudit(id, AUDIT_REJECTED, 0, remark);
+            auditStatus = AUDIT_REJECTED;
         }
-        merchantMapper.updateAudit(id, AUDIT_REJECTED, 0, remark);
-        return new MerchantAuditVO(id, AUDIT_REJECTED, remark);
+
+        Map<String, Object> detail = new LinkedHashMap<>();
+        detail.put("action", approve ? "approve" : "reject");
+        detail.put("remark", remark);
+        adminLogService.record("MERCHANT_AUDIT", "MERCHANT", id, detail);
+        return new MerchantAuditVO(id, auditStatus, remark);
     }
 
     private AdminMerchantPendingVO toPendingVO(Merchant m) {

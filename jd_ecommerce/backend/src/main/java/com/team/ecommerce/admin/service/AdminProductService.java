@@ -16,6 +16,7 @@ import com.team.ecommerce.common.ResultCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,13 +34,16 @@ public class AdminProductService {
     private final ProductSkuMapper productSkuMapper;
     private final MerchantMapper merchantMapper;
     private final ObjectMapper objectMapper;
+    private final AdminLogService adminLogService;
 
     public AdminProductService(ProductMapper productMapper, ProductSkuMapper productSkuMapper,
-                               MerchantMapper merchantMapper, ObjectMapper objectMapper) {
+                               MerchantMapper merchantMapper, ObjectMapper objectMapper,
+                               AdminLogService adminLogService) {
         this.productMapper = productMapper;
         this.productSkuMapper = productSkuMapper;
         this.merchantMapper = merchantMapper;
         this.objectMapper = objectMapper;
+        this.adminLogService = adminLogService;
     }
 
     /** 8.1 待审核商品列表（无分页，纯数组）。 */
@@ -74,12 +78,20 @@ public class AdminProductService {
         if (product.getStatus() == null || product.getStatus() != STATUS_PENDING) {
             throw new BizException(ResultCode.BAD_REQUEST, "商品不在待审核状态");
         }
+        int status;
         if (approve) {
             productMapper.updateStatus(id, STATUS_ON_SALE, remark);
-            return new ProductAuditVO(id, STATUS_ON_SALE, remark);
+            status = STATUS_ON_SALE;
+        } else {
+            productMapper.updateStatus(id, STATUS_REJECTED, remark);
+            status = STATUS_REJECTED;
         }
-        productMapper.updateStatus(id, STATUS_REJECTED, remark);
-        return new ProductAuditVO(id, STATUS_REJECTED, remark);
+
+        Map<String, Object> detail = new LinkedHashMap<>();
+        detail.put("action", approve ? "approve" : "reject");
+        detail.put("remark", remark);
+        adminLogService.record("PRODUCT_AUDIT", "PRODUCT", id, detail);
+        return new ProductAuditVO(id, status, remark);
     }
 
     private AdminProductPendingVO toPendingVO(Product p) {

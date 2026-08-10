@@ -2,6 +2,7 @@ package com.team.ecommerce.admin;
 
 import com.team.ecommerce.admin.dto.AdminUserVO;
 import com.team.ecommerce.admin.dto.UserStatusVO;
+import com.team.ecommerce.admin.service.AdminLogService;
 import com.team.ecommerce.admin.service.AdminUserService;
 import com.team.ecommerce.auth.entity.User;
 import com.team.ecommerce.auth.mapper.UserMapper;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +31,9 @@ class AdminUserServiceTest {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private AdminLogService adminLogService;
 
     @InjectMocks
     private AdminUserService adminUserService;
@@ -89,6 +94,7 @@ class AdminUserServiceTest {
         assertEquals(4L, vo.id());
         assertEquals(0, vo.status());
         verify(userMapper).updateStatus(4L, 0);
+        verify(adminLogService).record(eq("USER_DISABLE"), eq("USER"), eq(4L), any());
     }
 
     @Test

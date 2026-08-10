@@ -9,8 +9,11 @@ import com.team.ecommerce.common.PageResult;
 import com.team.ecommerce.common.ResultCode;
 import com.team.ecommerce.security.UserContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 平台用户管理服务（6.1 / 6.2）。
@@ -22,9 +25,11 @@ public class AdminUserService {
     private static final int MAX_SIZE = 100;
 
     private final UserMapper userMapper;
+    private final AdminLogService adminLogService;
 
-    public AdminUserService(UserMapper userMapper) {
+    public AdminUserService(UserMapper userMapper, AdminLogService adminLogService) {
         this.userMapper = userMapper;
+        this.adminLogService = adminLogService;
     }
 
     /** 6.1 用户列表：keyword 模糊搜用户名/昵称/手机号，role/status 过滤，分页，不含密码。 */
@@ -38,6 +43,7 @@ public class AdminUserService {
     }
 
     /** 6.2 禁用/启用用户；不能禁用自己。 */
+    @Transactional
     public UserStatusVO updateStatus(Long id, Integer status) {
         if (status == null || (status != 0 && status != 1)) {
             throw new BizException(ResultCode.BAD_REQUEST, "状态非法");
@@ -50,6 +56,10 @@ public class AdminUserService {
             throw new BizException(ResultCode.BAD_REQUEST, "不能禁用自己");
         }
         userMapper.updateStatus(id, status);
+
+        Map<String, Object> detail = new LinkedHashMap<>();
+        detail.put("action", status == 0 ? "disable" : "enable");
+        adminLogService.record("USER_DISABLE", "USER", id, detail);
         return new UserStatusVO(id, status);
     }
 

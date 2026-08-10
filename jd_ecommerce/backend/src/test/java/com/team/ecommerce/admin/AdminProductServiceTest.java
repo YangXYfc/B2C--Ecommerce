@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.ecommerce.admin.dto.AdminProductDetailVO;
 import com.team.ecommerce.admin.dto.AdminProductPendingVO;
 import com.team.ecommerce.admin.dto.ProductAuditVO;
+import com.team.ecommerce.admin.service.AdminLogService;
 import com.team.ecommerce.admin.service.AdminProductService;
 import com.team.ecommerce.auth.entity.Merchant;
 import com.team.ecommerce.auth.mapper.MerchantMapper;
@@ -26,6 +27,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +43,9 @@ class AdminProductServiceTest {
 
     @Mock
     private MerchantMapper merchantMapper;
+
+    @Mock
+    private AdminLogService adminLogService;
 
     @Spy
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -148,6 +153,7 @@ class AdminProductServiceTest {
         assertEquals(1, vo.status());
         assertEquals("商品信息完整，审核通过", vo.remark());
         verify(productMapper).updateStatus(8L, 1, "商品信息完整，审核通过");
+        verify(adminLogService).record(eq("PRODUCT_AUDIT"), eq("PRODUCT"), eq(8L), any());
     }
 
     @Test
@@ -160,6 +166,7 @@ class AdminProductServiceTest {
         assertEquals(3, vo.status());
         assertEquals("图片不合格", vo.remark());
         verify(productMapper).updateStatus(8L, 3, "图片不合格");
+        verify(adminLogService).record(eq("PRODUCT_AUDIT"), eq("PRODUCT"), eq(8L), any());
     }
 
     @Test

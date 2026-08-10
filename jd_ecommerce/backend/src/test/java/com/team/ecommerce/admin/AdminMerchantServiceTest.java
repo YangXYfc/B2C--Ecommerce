@@ -3,6 +3,7 @@ package com.team.ecommerce.admin;
 import com.team.ecommerce.admin.dto.AdminMerchantDetailVO;
 import com.team.ecommerce.admin.dto.AdminMerchantPendingVO;
 import com.team.ecommerce.admin.dto.MerchantAuditVO;
+import com.team.ecommerce.admin.service.AdminLogService;
 import com.team.ecommerce.admin.service.AdminMerchantService;
 import com.team.ecommerce.auth.entity.Merchant;
 import com.team.ecommerce.auth.entity.User;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,6 +39,9 @@ class AdminMerchantServiceTest {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private AdminLogService adminLogService;
 
     @InjectMocks
     private AdminMerchantService adminMerchantService;
@@ -130,6 +135,7 @@ class AdminMerchantServiceTest {
         assertEquals("资料齐全，审核通过", vo.remark());
         verify(merchantMapper).updateAudit(3L, 1, 1, "资料齐全，审核通过");
         verify(userMapper).updateRole(7L, "MERCHANT");
+        verify(adminLogService).record(eq("MERCHANT_AUDIT"), eq("MERCHANT"), eq(3L), any());
     }
 
     @Test
@@ -143,6 +149,7 @@ class AdminMerchantServiceTest {
         assertEquals("资料不足", vo.remark());
         verify(merchantMapper).updateAudit(3L, 2, 0, "资料不足");
         verify(userMapper, never()).updateRole(any(), any());
+        verify(adminLogService).record(eq("MERCHANT_AUDIT"), eq("MERCHANT"), eq(3L), any());
     }
 
     @Test
@@ -177,5 +184,6 @@ class AdminMerchantServiceTest {
         assertNull(vo.remark());
         verify(merchantMapper).updateAudit(3L, 1, 1, null);
         verify(userMapper).updateRole(7L, "MERCHANT");
+        verify(adminLogService).record(eq("MERCHANT_AUDIT"), eq("MERCHANT"), eq(3L), any());
     }
 }
