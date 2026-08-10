@@ -24,4 +24,13 @@
         VALUES (#{userId}, #{shopName}, #{shopLogo}, #{description}, #{contactPhone}, #{status}, #{auditStatus})
     </insert>
 
+    <update id="updateShop" parameterType="com.team.ecommerce.auth.entity.Merchant">
+        UPDATE `merchant`
+        SET shop_name = #{shopName},
+            shop_logo = #{shopLogo},
+            description = #{description},
+            contact_phone = #{contactPhone}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

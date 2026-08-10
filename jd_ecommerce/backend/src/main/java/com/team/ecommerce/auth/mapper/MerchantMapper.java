@@ -16,4 +16,7 @@ public interface MerchantMapper {
 
     /** 新增商家，成功后回填自增主键到 {@code merchant.id}。 */
     int insert(Merchant merchant);
+
+    /** 更新店铺资料（shopName/shopLogo/description/contactPhone），不改审核状态。 */
+    int updateShop(Merchant merchant);
 }
