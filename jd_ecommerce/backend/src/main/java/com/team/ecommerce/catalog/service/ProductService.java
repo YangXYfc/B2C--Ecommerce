@@ -180,7 +180,10 @@ public class ProductService {
         product.setAuditRemark(null);
         productMapper.update(product);
 
-        productSkuMapper.deleteByProductId(id);
+        // 有订单引用的 SKU 不能物理删除（order_item 外键 RESTRICT）：未卖过的删除，卖过的保留但停用，
+        // 新清单全部新增。详情查询只取 status=1，停用后各端均不可见，order_item 快照继续有效。
+        productSkuMapper.deleteUnreferenced(id);
+        productSkuMapper.disableReferenced(id);
         insertSkus(id, req.skus());
         return new ProductStatusVO(id, STATUS_PENDING);
     }
