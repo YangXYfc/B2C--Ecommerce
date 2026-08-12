@@ -3,6 +3,8 @@ package com.team.ecommerce.catalog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.ecommerce.auth.entity.Merchant;
 import com.team.ecommerce.auth.mapper.MerchantMapper;
+import com.team.ecommerce.catalog.dto.MerchantProductDetailVO;
+import com.team.ecommerce.catalog.dto.MerchantProductListVO;
 import com.team.ecommerce.catalog.dto.ProductDetailVO;
 import com.team.ecommerce.catalog.dto.ProductIdVO;
 import com.team.ecommerce.catalog.dto.ProductRequest;
@@ -31,6 +33,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -220,6 +223,100 @@ class ProductServiceTest {
         assertEquals(404, e.getCode());
     }
 
+    // ---------- 4.4 / 4.5 商家商品 ----------
+
+    @Test
+    void merchantList_approved_mapsRows() {
+        when(merchantMapper.findByUserId(2L)).thenReturn(approvedMerchant());
+        Product p1 = product(1, 1);
+        p1.setCreatedAt(LocalDateTime.of(2026, 8, 1, 10, 0));
+        Product p2 = product(2, 1);
+        when(productMapper.countMerchant(1L, null)).thenReturn(2L);
+        when(productMapper.findMerchantPage(1L, null, 0, 10)).thenReturn(List.of(p1, p2));
+
+        PageResult<MerchantProductListVO> result = productService.merchantList(null, 1, 10);
+
+        assertEquals(2L, result.total());
+        assertEquals(1, result.page());
+        assertEquals(10, result.size());
+        MerchantProductListVO vo = result.list().get(0);
+        assertEquals(1L, vo.id());
+        assertEquals("智选 Pro 5G 手机 12GB+256GB", vo.name());
+        assertEquals(1, vo.status());
+        assertNull(vo.auditRemark());
+        assertEquals(100, vo.salesCount());
+        assertEquals(LocalDateTime.of(2026, 8, 1, 10, 0), vo.createdAt());
+    }
+
+    @Test
+    void merchantList_statusFilter_passedToMapper() {
+        when(merchantMapper.findByUserId(2L)).thenReturn(approvedMerchant());
+        when(productMapper.countMerchant(1L, 0)).thenReturn(0L);
+        when(productMapper.findMerchantPage(1L, 0, 0, 10)).thenReturn(List.of());
+
+        PageResult<MerchantProductListVO> result = productService.merchantList(0, 1, 10);
+
+        assertEquals(0L, result.total());
+        verify(productMapper).countMerchant(1L, 0);
+        verify(productMapper).findMerchantPage(1L, 0, 0, 10);
+    }
+
+    @Test
+    void merchantList_sizeOverMax_throwsBadRequest() {
+        when(merchantMapper.findByUserId(2L)).thenReturn(approvedMerchant());
+
+        BizException e = assertThrows(BizException.class,
+                () -> productService.merchantList(null, 1, 101));
+        assertEquals(400, e.getCode());
+    }
+
+    @Test
+    void merchantList_unapprovedMerchant_throwsForbidden() {
+        Merchant m = approvedMerchant();
+        m.setAuditStatus(0);
+        when(merchantMapper.findByUserId(2L)).thenReturn(m);
+
+        BizException e = assertThrows(BizException.class,
+                () -> productService.merchantList(null, 1, 10));
+        assertEquals(403, e.getCode());
+    }
+
+    @Test
+    void merchantDetail_owned_returnsFullVO() {
+        when(merchantMapper.findByUserId(2L)).thenReturn(approvedMerchant());
+        when(productMapper.findById(1L)).thenReturn(product(1, 1));
+        when(productSkuMapper.findByProductId(1L)).thenReturn(List.of(sku(1, 1)));
+
+        MerchantProductDetailVO vo = productService.merchantDetail(1L);
+
+        assertEquals(1L, vo.id());
+        assertEquals("智选 Pro 5G 手机 12GB+256GB", vo.name());
+        assertEquals(1, vo.status());
+        assertNull(vo.auditRemark());
+        assertEquals(100, vo.salesCount());
+        assertEquals(111L, vo.categoryId());
+        assertEquals(1, vo.skus().size());
+        assertEquals("钛空灰", vo.skus().get(0).attributes().get("颜色"));
+    }
+
+    @Test
+    void merchantDetail_notExists_throwsNotFound() {
+        when(merchantMapper.findByUserId(2L)).thenReturn(approvedMerchant());
+        when(productMapper.findById(1L)).thenReturn(null);
+
+        BizException e = assertThrows(BizException.class, () -> productService.merchantDetail(1L));
+        assertEquals(404, e.getCode());
+    }
+
+    @Test
+    void merchantDetail_notOwner_throwsForbidden() {
+        when(merchantMapper.findByUserId(2L)).thenReturn(approvedMerchant());
+        when(productMapper.findById(1L)).thenReturn(product(1, 2));
+
+        BizException e = assertThrows(BizException.class, () -> productService.merchantDetail(1L));
+        assertEquals(403, e.getCode());
+    }
+
     // ---------- 4.6 发布商品 ----------
 
     @Test
@@ -288,7 +385,8 @@ class ProductServiceTest {
         when(productMapper.findById(1L)).thenReturn(product(1, 1));
         when(categoryMapper.findById(111L)).thenReturn(category(111, 11));
         when(productMapper.update(any(Product.class))).thenReturn(1);
-        when(productSkuMapper.deleteByProductId(1L)).thenReturn(1);
+        when(productSkuMapper.deleteUnreferenced(1L)).thenReturn(1);
+        when(productSkuMapper.disableReferenced(1L)).thenReturn(1);
         when(productSkuMapper.insert(any(ProductSku.class))).thenReturn(1);
 
         ProductStatusVO vo = productService.update(1L,
@@ -300,7 +398,8 @@ class ProductServiceTest {
         verify(productMapper).update(captor.capture());
         assertEquals(0, captor.getValue().getStatus());
         assertNull(captor.getValue().getAuditRemark());
-        verify(productSkuMapper).deleteByProductId(1L);
+        verify(productSkuMapper).deleteUnreferenced(1L);
+        verify(productSkuMapper).disableReferenced(1L);
         verify(productSkuMapper, times(1)).insert(any(ProductSku.class));
     }
 
