@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class InventoryGatewayImpl implements InventoryGateway {
 
-    private final ProductSkuMapper productSkuMapper;
+    private final TradeProductSkuMapper productSkuMapper;
 
-    public InventoryGatewayImpl(ProductSkuMapper productSkuMapper) {
+    public InventoryGatewayImpl(TradeProductSkuMapper productSkuMapper) {
         this.productSkuMapper = productSkuMapper;
     }
 

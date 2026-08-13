@@ -1,15 +1,14 @@
 package com.team.ecommerce.admin.mapper;
 
-import com.team.ecommerce.admin.entity.AdminLogEntity;
-import java.util.List;
+import com.team.ecommerce.admin.entity.AdminLog;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
+/**
+ * 管理员操作日志 Mapper，SQL 见 src/main/resources/mapper/AdminLogMapper.xml。
+ */
 @Mapper
 public interface AdminLogMapper {
-    AdminLogEntity selectById(Long id);
-    List<AdminLogEntity> selectPage(@Param("action") String action,
-            @Param("offset") int offset, @Param("size") int size);
-    long countByAction(@Param("action") String action);
-    int insert(AdminLogEntity entity);
+
+    /** 新增一条操作日志，成功后回填自增主键到 {@code adminLog.id}。 */
+    int insert(AdminLog adminLog);
 }

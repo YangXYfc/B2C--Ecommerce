@@ -1,22 +1,31 @@
+# ============================================================
+# 后端通用配置
+# ============================================================
 spring:
   application:
-    name: b2c-ecommerce-backend
-  datasource:
-    url: jdbc:h2:mem:jd_ecommerce;MODE=MySQL;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema-h2.sql
-      data-locations: classpath:data-h2.sql
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    name: backend
+  profiles:
+    active: dev
+  # 上传限制：放宽到 10MB，业务上限 5MB 由 FileService 校验（契约 4.3）
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
 
+server:
+  port: 8080
+
+# 数据访问层配置占位（接口阶段启用 MyBatis，见分工文档 2.2 节）
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+# JWT 配置（HS256 密钥 >= 32 字节）
+jwt:
+  secret: jd-ecommerce-demo-secret-key-2026-0123456789-abcdefghijklmnopqrstuvwxyz
+  expiration: 86400000   # 24 小时（毫秒）
+
+# 图片上传目录（相对项目运行目录）
+upload:
+  dir: upload/

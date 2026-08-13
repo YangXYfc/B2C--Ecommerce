@@ -7,7 +7,7 @@ import com.team.ecommerce.admin.dto.BannerRequest;
 import com.team.ecommerce.admin.dto.BannerView;
 import com.team.ecommerce.admin.entity.AdminLogEntity;
 import com.team.ecommerce.admin.entity.BannerEntity;
-import com.team.ecommerce.admin.mapper.AdminLogMapper;
+import com.team.ecommerce.admin.mapper.PlatformAdminLogMapper;
 import com.team.ecommerce.admin.mapper.BannerMapper;
 import com.team.ecommerce.common.api.PageResult;
 import com.team.ecommerce.common.error.BusinessException;
@@ -24,13 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlatformAdminServiceImpl implements PlatformAdminService {
 
     private final BannerMapper bannerMapper;
-    private final AdminLogMapper adminLogMapper;
+    private final PlatformAdminLogMapper adminLogMapper;
 
     // For dashboard stats we'd normally have dedicated COUNT queries.
     // In this implementation we approximate via Mapper queries.
     private final AdminDashboardMapper adminDashboardMapper;
 
-    public PlatformAdminServiceImpl(BannerMapper bannerMapper, AdminLogMapper adminLogMapper,
+    public PlatformAdminServiceImpl(BannerMapper bannerMapper, PlatformAdminLogMapper adminLogMapper,
             AdminDashboardMapper adminDashboardMapper) {
         this.bannerMapper = bannerMapper;
         this.adminLogMapper = adminLogMapper;

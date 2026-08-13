@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.team.ecommerce.admin.dto.BannerRequest;
 import com.team.ecommerce.admin.dto.BannerView;
-import com.team.ecommerce.admin.mapper.AdminLogMapper;
+import com.team.ecommerce.admin.mapper.PlatformAdminLogMapper;
 import com.team.ecommerce.admin.service.PlatformAdminService;
 import com.team.ecommerce.common.error.BusinessException;
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ class PlatformAdminServiceIntegrationTest {
     private PlatformAdminService platformAdminService;
 
     @Autowired
-    private AdminLogMapper adminLogMapper;
+    private PlatformAdminLogMapper adminLogMapper;
 
     private static final Long ADMIN_ID = 1L;
 

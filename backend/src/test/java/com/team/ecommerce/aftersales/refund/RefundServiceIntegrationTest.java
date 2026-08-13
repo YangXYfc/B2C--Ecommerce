@@ -11,7 +11,7 @@ import com.team.ecommerce.aftersales.refund.dto.CreateRefundRequest;
 import com.team.ecommerce.aftersales.refund.dto.RefundQuery;
 import com.team.ecommerce.aftersales.refund.dto.ReturnLogisticsRequest;
 import com.team.ecommerce.aftersales.refund.service.RefundService;
-import com.team.ecommerce.admin.mapper.AdminLogMapper;
+import com.team.ecommerce.admin.mapper.PlatformAdminLogMapper;
 import com.team.ecommerce.common.error.BusinessException;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class RefundServiceIntegrationTest {
     private RefundService refundService;
 
     @Autowired
-    private AdminLogMapper adminLogMapper;
+    private PlatformAdminLogMapper adminLogMapper;
 
     @Test
     void createRefundSetsPending() {

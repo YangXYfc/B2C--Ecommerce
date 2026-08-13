@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.team.ecommerce.common.error.BusinessException;
-import com.team.ecommerce.trade.inventory.ProductSkuMapper;
+import com.team.ecommerce.trade.inventory.TradeProductSkuMapper;
 import com.team.ecommerce.trade.order.dto.CancelOrderRequest;
 import com.team.ecommerce.trade.order.dto.CreateOrderRequest;
 import com.team.ecommerce.trade.order.dto.OrderQuery;
@@ -24,7 +24,7 @@ class OrderServiceIntegrationTest {
     private OrderService orderService;
 
     @Autowired
-    private ProductSkuMapper productSkuMapper;
+    private TradeProductSkuMapper productSkuMapper;
 
     private static final Long USER_ID = 4L;
 

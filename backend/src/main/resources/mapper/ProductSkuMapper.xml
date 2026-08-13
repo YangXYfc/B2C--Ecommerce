@@ -1,19 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.team.ecommerce.trade.inventory.ProductSkuMapper">
+<mapper namespace="com.team.ecommerce.catalog.mapper.ProductSkuMapper">
+    <!-- 注意：deleteUnreferenced / disableReferenced 会只读引用 E 负责的 order_item 表（无结构/数据改动）。
+         若 E 重命名或删除该表，需与此处联动。 -->
 
-    <select id="selectStockForUpdate" resultType="int">
-        SELECT stock FROM product_sku WHERE id = #{skuId} FOR UPDATE
+    <sql id="skuColumns">
+        id, product_id AS productId, sku_name AS skuName, price, original_price AS originalPrice,
+        stock, attributes, sku_image AS skuImage, status,
+        created_at AS createdAt, updated_at AS updatedAt
+    </sql>
+
+    <select id="findByProductId" resultType="com.team.ecommerce.catalog.entity.ProductSku">
+        SELECT <include refid="skuColumns"/>
+        FROM product_sku
+        WHERE product_id = #{productId} AND status = 1
+        ORDER BY id ASC
     </select>
 
-    <update id="deductStock">
-        UPDATE product_sku SET stock = stock - #{quantity}
-        WHERE id = #{skuId} AND stock >= #{quantity}
+    <select id="findById" resultType="com.team.ecommerce.catalog.entity.ProductSku">
+        SELECT <include refid="skuColumns"/>
+        FROM product_sku
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.team.ecommerce.catalog.entity.ProductSku"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product_sku (product_id, sku_name, price, original_price, stock, attributes, sku_image, status)
+        VALUES (#{productId}, #{skuName}, #{price}, #{originalPrice}, #{stock}, #{attributes}, #{skuImage}, #{status})
+    </insert>
+
+    <delete id="deleteUnreferenced">
+        DELETE FROM product_sku ps
+        WHERE ps.product_id = #{productId}
+          AND NOT EXISTS (SELECT 1 FROM order_item oi WHERE oi.product_sku_id = ps.id)
+    </delete>
+
+    <update id="disableReferenced">
+        UPDATE product_sku ps
+        SET ps.status = 0
+        WHERE ps.product_id = #{productId}
+          AND EXISTS (SELECT 1 FROM order_item oi WHERE oi.product_sku_id = ps.id)
     </update>
 
-    <update id="restoreStock">
-        UPDATE product_sku SET stock = stock + #{quantity}
-        WHERE id = #{skuId}
+    <update id="updateStock">
+        UPDATE product_sku
+        SET stock = #{stock}
+        WHERE id = #{id}
     </update>
 
 </mapper>

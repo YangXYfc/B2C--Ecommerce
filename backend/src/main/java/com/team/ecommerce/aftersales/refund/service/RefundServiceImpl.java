@@ -5,7 +5,7 @@ import com.team.ecommerce.aftersales.refund.dto.*;
 import com.team.ecommerce.aftersales.refund.entity.RefundEntity;
 import com.team.ecommerce.aftersales.refund.mapper.RefundMapper;
 import com.team.ecommerce.admin.entity.AdminLogEntity;
-import com.team.ecommerce.admin.mapper.AdminLogMapper;
+import com.team.ecommerce.admin.mapper.PlatformAdminLogMapper;
 import com.team.ecommerce.common.api.PageResult;
 import com.team.ecommerce.common.error.BusinessException;
 import com.team.ecommerce.common.error.ErrorCode;
@@ -24,10 +24,10 @@ public class RefundServiceImpl implements RefundService {
 
     private final RefundMapper refundMapper;
     private final OrderMapper orderMapper;
-    private final AdminLogMapper adminLogMapper;
+    private final PlatformAdminLogMapper adminLogMapper;
 
     public RefundServiceImpl(RefundMapper refundMapper, OrderMapper orderMapper,
-            AdminLogMapper adminLogMapper) {
+            PlatformAdminLogMapper adminLogMapper) {
         this.refundMapper = refundMapper;
         this.orderMapper = orderMapper;
         this.adminLogMapper = adminLogMapper;
