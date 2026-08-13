@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.aftersales.refund.mapper.RefundMapper">
+
+    <resultMap id="refundMap" type="com.team.ecommerce.aftersales.refund.entity.RefundEntity">
+        <constructor>
+            <idArg column="id" javaType="Long"/>
+            <arg column="refund_no" javaType="String"/>
+            <arg column="order_id" javaType="Long"/>
+            <arg column="user_id" javaType="Long"/>
+            <arg column="merchant_id" javaType="Long"/>
+            <arg column="reason" javaType="String"/>
+            <arg column="description" javaType="String"/>
+            <arg column="amount" javaType="java.math.BigDecimal"/>
+            <arg column="status" javaType="Integer"/>
+            <arg column="merchant_audit_time" javaType="java.time.LocalDateTime"/>
+            <arg column="merchant_remark" javaType="String"/>
+            <arg column="return_logistics_company" javaType="String"/>
+            <arg column="return_logistics_no" javaType="String"/>
+            <arg column="return_ship_time" javaType="java.time.LocalDateTime"/>
+            <arg column="merchant_confirm_time" javaType="java.time.LocalDateTime"/>
+            <arg column="appeal_time" javaType="java.time.LocalDateTime"/>
+            <arg column="appeal_reason" javaType="String"/>
+            <arg column="admin_id" javaType="Long"/>
+            <arg column="admin_handle_time" javaType="java.time.LocalDateTime"/>
+            <arg column="admin_remark" javaType="String"/>
+            <arg column="completed_time" javaType="java.time.LocalDateTime"/>
+            <arg column="timeout_hours" javaType="Integer"/>
+            <arg column="created_at" javaType="java.time.LocalDateTime"/>
+            <arg column="updated_at" javaType="java.time.LocalDateTime"/>
+        </constructor>
+    </resultMap>
+
+    <select id="selectById" resultMap="refundMap">
+        SELECT * FROM refund WHERE id = #{id}
+    </select>
+
+    <select id="selectByUser" resultMap="refundMap">
+        SELECT * FROM refund WHERE user_id = #{userId}
+        <if test="status != null">AND status = #{status}</if>
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="selectByMerchant" resultMap="refundMap">
+        SELECT * FROM refund WHERE merchant_id = #{merchantId}
+        <if test="status != null">AND status = #{status}</if>
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="selectForArbitration" resultMap="refundMap">
+        SELECT * FROM refund WHERE status = 5
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="lastInsertId" resultType="long">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <select id="countByUser" resultType="long">
+        SELECT COUNT(*) FROM refund WHERE user_id = #{userId}
+        <if test="status != null">AND status = #{status}</if>
+    </select>
+
+    <select id="countByMerchant" resultType="long">
+        SELECT COUNT(*) FROM refund WHERE merchant_id = #{merchantId}
+        <if test="status != null">AND status = #{status}</if>
+    </select>
+
+    <select id="countForArbitration" resultType="long">
+        SELECT COUNT(*) FROM refund WHERE status = 5
+    </select>
+
+    <insert id="insert">
+        INSERT INTO refund (refund_no, order_id, user_id, merchant_id, reason, description,
+            amount, status, merchant_audit_time, merchant_remark, return_logistics_company,
+            return_logistics_no, return_ship_time, merchant_confirm_time, appeal_time,
+            appeal_reason, admin_id, admin_handle_time, admin_remark, completed_time, timeout_hours)
+        VALUES (#{refundNo}, #{orderId}, #{userId}, #{merchantId}, #{reason}, #{description},
+            #{amount}, #{status}, #{merchantAuditTime}, #{merchantRemark}, #{returnLogisticsCompany},
+            #{returnLogisticsNo}, #{returnShipTime}, #{merchantConfirmTime}, #{appealTime},
+            #{appealReason}, #{adminId}, #{adminHandleTime}, #{adminRemark}, #{completedTime}, #{timeoutHours})
+    </insert>
+
+    <update id="updateById">
+        UPDATE refund
+        <set>
+            <if test="refundNo != null">refund_no = #{refundNo},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="merchantAuditTime != null">merchant_audit_time = #{merchantAuditTime},</if>
+            <if test="merchantRemark != null">merchant_remark = #{merchantRemark},</if>
+            <if test="returnLogisticsCompany != null">return_logistics_company = #{returnLogisticsCompany},</if>
+            <if test="returnLogisticsNo != null">return_logistics_no = #{returnLogisticsNo},</if>
+            <if test="returnShipTime != null">return_ship_time = #{returnShipTime},</if>
+            <if test="merchantConfirmTime != null">merchant_confirm_time = #{merchantConfirmTime},</if>
+            <if test="appealTime != null">appeal_time = #{appealTime},</if>
+            <if test="appealReason != null">appeal_reason = #{appealReason},</if>
+            <if test="adminId != null">admin_id = #{adminId},</if>
+            <if test="adminHandleTime != null">admin_handle_time = #{adminHandleTime},</if>
+            <if test="adminRemark != null">admin_remark = #{adminRemark},</if>
+            <if test="completedTime != null">completed_time = #{completedTime},</if>
+            <if test="timeoutHours != null">timeout_hours = #{timeoutHours},</if>
+            updated_at = CURRENT_TIMESTAMP
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

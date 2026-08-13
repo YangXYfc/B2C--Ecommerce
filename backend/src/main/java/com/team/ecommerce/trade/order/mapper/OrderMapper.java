@@ -12,6 +12,9 @@ public interface OrderMapper {
             @Param("offset") int offset, @Param("size") int size);
     List<OrderEntity> selectByMerchant(@Param("merchantId") Long merchantId, @Param("status") Integer status,
             @Param("offset") int offset, @Param("size") int size);
+    long countByUser(@Param("userId") Long userId, @Param("status") Integer status);
+    long countByMerchant(@Param("merchantId") Long merchantId, @Param("status") Integer status);
     int insert(OrderEntity entity);
     int updateById(OrderEntity entity);
+    long lastInsertId();
 }

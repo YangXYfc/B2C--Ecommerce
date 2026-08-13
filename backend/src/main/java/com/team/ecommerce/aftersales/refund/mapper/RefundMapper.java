@@ -13,6 +13,10 @@ public interface RefundMapper {
     List<RefundEntity> selectByMerchant(@Param("merchantId") Long merchantId, @Param("status") Integer status,
             @Param("offset") int offset, @Param("size") int size);
     List<RefundEntity> selectForArbitration(@Param("offset") int offset, @Param("size") int size);
+    long countByUser(@Param("userId") Long userId, @Param("status") Integer status);
+    long countByMerchant(@Param("merchantId") Long merchantId, @Param("status") Integer status);
+    long countForArbitration();
     int insert(RefundEntity entity);
     int updateById(RefundEntity entity);
+    long lastInsertId();
 }

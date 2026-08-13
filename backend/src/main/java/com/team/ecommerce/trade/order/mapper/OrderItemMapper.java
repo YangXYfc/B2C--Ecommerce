@@ -9,4 +9,5 @@ public interface OrderItemMapper {
     OrderItemEntity selectById(Long id);
     List<OrderItemEntity> selectByOrderId(Long orderId);
     int insert(OrderItemEntity entity);
+    long lastInsertId();
 }

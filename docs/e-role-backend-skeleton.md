@@ -1,70 +1,81 @@
-# E 角色后端骨架交接说明
+# E 角色后端实现说明
+
+> 本文档由"骨架交接说明"更新而来。骨架阶段已全部完成，业务逻辑已实现并通过测试。
 
 ## 当前交付
 
-本分支依据《B2C 多商家电商平台：任务分工与接口说明》建立 E 角色负责的交易、售后和平台运营后端骨架。Controller 路径、DTO、Service 契约、Mapper 接口、数据库实体和状态枚举已经建立；Service 骨架统一返回 HTTP 501，表示具体业务尚待实现。
+本分支实现 E 角色负责的交易、售后和平台运营后端。Controller 路径、DTO、Service 契约、Mapper 接口、数据库实体和状态枚举在骨架阶段建立；本次提交补充了全部业务逻辑与真实 SQL 映射。
+
+- **交易**：购物车（增删改查、勾选）、下单（按商家拆单、价格快照、扣库存）、模拟支付、取消订单（恢复库存）、确认收货、订单列表/详情
+- **售后**：评价（购买/收货校验、商家回复）、退款状态机（申请 → 商家审核 → 寄回 → 确认收货完成；拒绝 → 申诉 → 管理员仲裁）
+- **商家**：看板（订单数、销售额、待发货数）、订单查询、发货
+- **平台运营**：管理员统计、操作日志、轮播图管理（含公开轮播图接口）
 
 ## 运行环境
 
-- Java 25
-- Spring Boot 3.5.16
-- Maven 3.6.3 或更高版本
-- MyBatis Spring Boot Starter 3.0.5
-- MySQL 8（开发环境）
-- H2（默认骨架启动环境）
-
-在仓库根目录运行测试：
+- Java 25、Spring Boot 3.5.16、Maven 3.6.3+、MyBatis Spring Boot Starter 3.0.5
+- MySQL 8（开发环境）、H2（默认骨架启动环境）
 
 ```bash
-mvn -f backend/pom.xml test
-```
-
-默认启动（使用内存 H2，不执行建表脚本）：
-
-```bash
+# 默认启动（H2 内存库，自动执行 schema-h2.sql + data-h2.sql，含演示数据）
 mvn -f backend/pom.xml spring-boot:run
-```
 
-使用 MySQL 开发配置：
-
-```bash
+# MySQL 开发配置
 DB_URL="jdbc:mysql://localhost:3306/jd_ecommerce?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai" \
 DB_USERNAME=root DB_PASSWORD=your_password \
 mvn -f backend/pom.xml spring-boot:run -Dspring-boot.run.profiles=dev
-```
 
-Windows PowerShell 可先设置同名环境变量，再执行最后一条 Maven 命令。数据库初始化脚本位于 `database/schema.sql` 和 `database/data.sql`，两者均原样来自开发文档附录。
+# 测试（53 个：路由注册、状态枚举、6 个服务集成测试）
+mvn -f backend/pom.xml test
+```
 
 ## 模块边界
 
-- `common`：统一响应、分页和异常处理。
-- `trade/cart`：购物车接口骨架。
-- `trade/order`：下单、订单、取消、支付、收货接口骨架。
-- `trade/payment`：模拟支付实体和 Mapper 契约。
-- `trade/inventory`：与 D 角色协作的库存检查、扣减和恢复接口。
-- `aftersales/review`：消费者评价和商家回复接口骨架。
-- `aftersales/refund`：退款、退货、申诉、商家处理和管理员仲裁接口骨架。
-- `merchant`：商家看板、订单查询和发货接口骨架。
-- `admin`：平台统计、操作日志和轮播图接口骨架。
+- `common`：统一响应、分页、异常处理。
+- `trade/cart`：购物车。
+- `trade/order`：下单、订单、取消、支付、收货。
+- `trade/payment`：模拟支付。
+- `trade/inventory`：库存检查、扣减和恢复（`InventoryGatewayImpl` 直连 `product_sku` 表，`SELECT ... FOR UPDATE` 保证原子性）。
+- `aftersales/review`：消费者评价和商家回复。
+- `aftersales/refund`：退款、退货、申诉、商家处理和管理员仲裁（含状态机）。
+- `merchant`：商家看板、订单查询和发货。
+- `admin`：平台统计、操作日志和轮播图。
 
-## 临时身份接入点
+## 实现要点
 
-骨架尚未接入 D 角色负责的 JWT。Controller 使用以下请求头明确标出后续安全模块需要提供的身份：
+### 身份接入点（临时）
 
-- `X-User-Id`：消费者 ID。
-- `X-Merchant-Id`：商家 ID。
-- `X-Admin-Id`：管理员 ID。
+D 角色的 JWT 尚未接入。Controller 使用以下请求头标出身份，接入 JWT 后应由安全上下文提供：
 
-接入 JWT 后，应由安全上下文提供这些 ID，并移除请求方直接指定身份的方式。
+- `X-User-Id`：消费者 ID
+- `X-Merchant-Id`：商家 ID
+- `X-Admin-Id`：管理员 ID
 
-## 后续实现入口
+### 数据访问
 
-1. 在各模块的 `*ServiceSkeleton` 中补充业务规则，或新增正式实现并替换骨架 Bean。
-2. 在 Mapper 接口上增加 MyBatis XML 或注解 SQL；当前接口没有真实 SQL 映射。
-3. 由 D/E 联调实现 `InventoryGateway`，并把订单创建、取消与库存操作纳入事务。
-4. 根据 `OrderStatus` 和 `RefundStatus` 实现状态转换合法性校验。
-5. 接入 D 角色的 JWT、用户、商家、商品和 SKU 能力，不在 E 模块复制这些领域逻辑。
+- Mapper 接口统一位于各模块 `mapper/` 包，SQL 写在 `resources/mapper/*.xml`，通过 `mybatis.mapper-locations` 加载。
+- 实体为不可变 Java record，因此插入后通过 `SELECT LAST_INSERT_ID()`（Mapper 的 `lastInsertId()`）获取自增主键，不再使用 `useGeneratedKeys`（record 无 setter）。
+- H2 演示脚本由 `scripts/gen-h2-sql.py` 从 MySQL 脚本自动生成，去掉 MySQL 专属语法并把全局索引名去重。
 
-## 明确未完成的内容
+### 订单状态机（orders.status）
 
-本骨架没有实现 JWT、真实数据库读写、库存事务、订单拆分、价格复核、订单状态机、退款状态机、真实支付或真实物流。调用业务接口收到 `NOT_IMPLEMENTED` 是当前阶段的预期行为，不代表路由缺失。
+0-待支付 → 1-待发货（支付）→ 2-已发货（商家发货）→ 3-已收货（确认收货）→ 4-已评价；0 → 5-已取消（恢复库存）。
+
+### 退款状态机（refund.status）
+
+0-待审核 → 1-商家通过 → 2-寄回中（用户填物流）→ 3-退款完成（商家确认收货）
+0 → 4-商家拒绝 → 5-用户申诉 → 6-管理员支持退款 / 7-管理员拒绝退款。
+
+## 测试
+
+- `EcommerceApplicationTest`：上下文加载
+- `*RouteRegistryTest`：36 个 E 角色路由注册断言（并断言 D 角色路由未被注册）
+- `OrderStatusTest` / `RefundStatusTest`：状态枚举映射
+- `*ServiceIntegrationTest`（cart / order / review / refund / merchant / admin）：基于 H2 演示数据的业务规则验证
+- `SqlExtractionTest`：校验 `schema.sql` / `data.sql` 与文档附录一致
+
+## 与 D 角色的协作点
+
+- 库存通过 `InventoryGateway` 直连 `product_sku` 表，待 D 角色联调时替换为正式网关。
+- 下单读取收货地址、商品/SKU 信息使用只读 Mapper（`AddressReadMapper`、`ProductReadMapper`），不复制 D 模块领域逻辑。
+- 商家店铺、商品、账号、审核接口归属 D 角色，本分支未实现。

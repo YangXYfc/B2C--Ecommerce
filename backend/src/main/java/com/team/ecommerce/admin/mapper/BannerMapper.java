@@ -12,4 +12,5 @@ public interface BannerMapper {
     int insert(BannerEntity entity);
     int updateById(BannerEntity entity);
     int deleteById(Long id);
+    long lastInsertId();
 }

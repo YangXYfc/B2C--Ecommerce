@@ -12,6 +12,9 @@ public interface ReviewMapper {
             @Param("offset") int offset, @Param("size") int size);
     List<ReviewEntity> selectByMerchantId(@Param("merchantId") Long merchantId,
             @Param("offset") int offset, @Param("size") int size);
+    long countByProductId(Long productId);
+    long countByMerchantId(Long merchantId);
     int insert(ReviewEntity entity);
     int updateById(ReviewEntity entity);
+    long lastInsertId();
 }

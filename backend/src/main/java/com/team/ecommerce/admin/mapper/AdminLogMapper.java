@@ -10,5 +10,6 @@ public interface AdminLogMapper {
     AdminLogEntity selectById(Long id);
     List<AdminLogEntity> selectPage(@Param("action") String action,
             @Param("offset") int offset, @Param("size") int size);
+    long countByAction(@Param("action") String action);
     int insert(AdminLogEntity entity);
 }

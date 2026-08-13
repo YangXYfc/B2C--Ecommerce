@@ -9,4 +9,5 @@ public interface PaymentMapper {
     PaymentEntity selectByOrderId(Long orderId);
     int insert(PaymentEntity entity);
     int updateById(PaymentEntity entity);
+    long lastInsertId();
 }

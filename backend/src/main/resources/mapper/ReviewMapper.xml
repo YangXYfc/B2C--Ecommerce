@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.aftersales.review.mapper.ReviewMapper">
+
+    <resultMap id="reviewMap" type="com.team.ecommerce.aftersales.review.entity.ReviewEntity">
+        <constructor>
+            <idArg column="id" javaType="Long"/>
+            <arg column="order_id" javaType="Long"/>
+            <arg column="product_id" javaType="Long"/>
+            <arg column="user_id" javaType="Long"/>
+            <arg column="content" javaType="String"/>
+            <arg column="rating" javaType="Integer"/>
+            <arg column="images" javaType="String"/>
+            <arg column="is_anonymous" javaType="Integer"/>
+            <arg column="merchant_reply" javaType="String"/>
+            <arg column="merchant_reply_time" javaType="java.time.LocalDateTime"/>
+            <arg column="created_at" javaType="java.time.LocalDateTime"/>
+            <arg column="updated_at" javaType="java.time.LocalDateTime"/>
+        </constructor>
+    </resultMap>
+
+    <select id="selectById" resultMap="reviewMap">
+        SELECT * FROM review WHERE id = #{id}
+    </select>
+
+    <select id="selectByProductId" resultMap="reviewMap">
+        SELECT * FROM review WHERE product_id = #{productId}
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="selectByMerchantId" resultMap="reviewMap">
+        SELECT r.* FROM review r
+        JOIN product p ON r.product_id = p.id
+        WHERE p.merchant_id = #{merchantId}
+        ORDER BY r.created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="lastInsertId" resultType="long">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <select id="countByProductId" resultType="long">
+        SELECT COUNT(*) FROM review WHERE product_id = #{productId}
+    </select>
+
+    <select id="countByMerchantId" resultType="long">
+        SELECT COUNT(*) FROM review r JOIN product p ON r.product_id = p.id
+        WHERE p.merchant_id = #{merchantId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO review (order_id, product_id, user_id, content, rating, images, is_anonymous)
+        VALUES (#{orderId}, #{productId}, #{userId}, #{content}, #{rating}, #{images}, #{isAnonymous})
+    </insert>
+
+    <update id="updateById">
+        UPDATE review
+        <set>
+            <if test="content != null">content = #{content},</if>
+            <if test="rating != null">rating = #{rating},</if>
+            <if test="images != null">images = #{images},</if>
+            <if test="isAnonymous != null">is_anonymous = #{isAnonymous},</if>
+            <if test="merchantReply != null">merchant_reply = #{merchantReply},</if>
+            <if test="merchantReplyTime != null">merchant_reply_time = #{merchantReplyTime},</if>
+            updated_at = CURRENT_TIMESTAMP
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>
