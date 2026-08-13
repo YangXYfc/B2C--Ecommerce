@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.admin.service.AdminDashboardMapper">
+
+    <select id="countUsers" resultType="long">
+        SELECT COUNT(*) FROM `user`
+    </select>
+
+    <select id="countMerchants" resultType="long">
+        SELECT COUNT(*) FROM `merchant`
+    </select>
+
+    <select id="countOrders" resultType="long">
+        SELECT COUNT(*) FROM `orders`
+    </select>
+
+    <select id="sumSales" resultType="java.math.BigDecimal">
+        SELECT COALESCE(SUM(pay_amount), 0) FROM `orders` WHERE status IN (1, 2, 3, 4)
+    </select>
+
+</mapper>

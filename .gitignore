@@ -1,3 +1,6 @@
+.worktrees/
+.superpowers/
+backend/target/
 .omo/
 node_modules/
 dist/

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.trade.order.mapper.OrderItemMapper">
+
+    <resultMap id="itemMap" type="com.team.ecommerce.trade.order.entity.OrderItemEntity">
+        <constructor>
+            <idArg column="id" javaType="Long"/>
+            <arg column="order_id" javaType="Long"/>
+            <arg column="product_sku_id" javaType="Long"/>
+            <arg column="product_name" javaType="String"/>
+            <arg column="sku_name" javaType="String"/>
+            <arg column="product_image" javaType="String"/>
+            <arg column="quantity" javaType="Integer"/>
+            <arg column="unit_price" javaType="java.math.BigDecimal"/>
+            <arg column="subtotal" javaType="java.math.BigDecimal"/>
+            <arg column="created_at" javaType="java.time.LocalDateTime"/>
+        </constructor>
+    </resultMap>
+
+    <select id="selectById" resultMap="itemMap">
+        SELECT * FROM order_item WHERE id = #{id}
+    </select>
+
+    <select id="selectByOrderId" resultMap="itemMap">
+        SELECT * FROM order_item WHERE order_id = #{orderId}
+    </select>
+
+    <select id="lastInsertId" resultType="long">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <insert id="insert">
+        INSERT INTO order_item (order_id, product_sku_id, product_name, sku_name, product_image,
+            quantity, unit_price, subtotal)
+        VALUES (#{orderId}, #{productSkuId}, #{productName}, #{skuName}, #{productImage},
+            #{quantity}, #{unitPrice}, #{subtotal})
+    </insert>
+
+</mapper>

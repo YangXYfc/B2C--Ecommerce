@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.trade.order.mapper.OrderMapper">
+
+    <resultMap id="orderMap" type="com.team.ecommerce.trade.order.entity.OrderEntity">
+        <constructor>
+            <idArg column="id" javaType="Long"/>
+            <arg column="order_no" javaType="String"/>
+            <arg column="user_id" javaType="Long"/>
+            <arg column="merchant_id" javaType="Long"/>
+            <arg column="total_amount" javaType="java.math.BigDecimal"/>
+            <arg column="pay_amount" javaType="java.math.BigDecimal"/>
+            <arg column="status" javaType="Integer"/>
+            <arg column="address_snapshot" javaType="String"/>
+            <arg column="remark" javaType="String"/>
+            <arg column="logistics_company" javaType="String"/>
+            <arg column="logistics_no" javaType="String"/>
+            <arg column="ship_time" javaType="java.time.LocalDateTime"/>
+            <arg column="receive_time" javaType="java.time.LocalDateTime"/>
+            <arg column="pay_time" javaType="java.time.LocalDateTime"/>
+            <arg column="cancel_time" javaType="java.time.LocalDateTime"/>
+            <arg column="cancel_reason" javaType="String"/>
+            <arg column="created_at" javaType="java.time.LocalDateTime"/>
+            <arg column="updated_at" javaType="java.time.LocalDateTime"/>
+        </constructor>
+    </resultMap>
+
+    <select id="selectById" resultMap="orderMap">
+        SELECT * FROM orders WHERE id = #{id}
+    </select>
+
+    <select id="selectByUser" resultMap="orderMap">
+        SELECT * FROM orders
+        WHERE user_id = #{userId}
+        <if test="status != null">AND status = #{status}</if>
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="selectByMerchant" resultMap="orderMap">
+        SELECT * FROM orders
+        WHERE merchant_id = #{merchantId}
+        <if test="status != null">AND status = #{status}</if>
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="lastInsertId" resultType="long">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <select id="countByUser" resultType="long">
+        SELECT COUNT(*) FROM orders WHERE user_id = #{userId}
+        <if test="status != null">AND status = #{status}</if>
+    </select>
+
+    <select id="countByMerchant" resultType="long">
+        SELECT COUNT(*) FROM orders WHERE merchant_id = #{merchantId}
+        <if test="status != null">AND status = #{status}</if>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO orders (order_no, user_id, merchant_id, total_amount, pay_amount, status,
+            address_snapshot, remark, logistics_company, logistics_no, ship_time, receive_time,
+            pay_time, cancel_time, cancel_reason)
+        VALUES (#{orderNo}, #{userId}, #{merchantId}, #{totalAmount}, #{payAmount}, #{status},
+            #{addressSnapshot}, #{remark}, #{logisticsCompany}, #{logisticsNo}, #{shipTime}, #{receiveTime},
+            #{payTime}, #{cancelTime}, #{cancelReason})
+    </insert>
+
+    <update id="updateById">
+        UPDATE orders
+        <set>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="payAmount != null">pay_amount = #{payAmount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="addressSnapshot != null">address_snapshot = #{addressSnapshot},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="logisticsCompany != null">logistics_company = #{logisticsCompany},</if>
+            <if test="logisticsNo != null">logistics_no = #{logisticsNo},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            updated_at = CURRENT_TIMESTAMP
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>
