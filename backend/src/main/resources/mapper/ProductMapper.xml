@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.ecommerce.catalog.mapper.ProductMapper">
+
+    <sql id="productColumns">
+        id, merchant_id AS merchantId, category_id AS categoryId, name, subtitle,
+        main_image AS mainImage, sub_images AS subImages, description, detail_html AS detailHtml,
+        price, status, audit_remark AS auditRemark, sales_count AS salesCount,
+        created_at AS createdAt, updated_at AS updatedAt
+    </sql>
+
+    <sql id="publicWhere">
+        status = #{status}
+        <if test="keyword != null and keyword != ''">
+            AND name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="categoryIds != null and categoryIds.size() > 0">
+            AND category_id IN
+            <foreach collection="categoryIds" item="cid" open="(" separator="," close=")">#{cid}</foreach>
+        </if>
+    </sql>
+
+    <select id="findPublicPage" resultType="com.team.ecommerce.catalog.entity.Product">
+        SELECT <include refid="productColumns"/>
+        FROM product
+        WHERE <include refid="publicWhere"/>
+        <choose>
+            <when test="sort == 'priceAsc'">ORDER BY price ASC, id ASC</when>
+            <when test="sort == 'priceDesc'">ORDER BY price DESC, id DESC</when>
+            <when test="sort == 'newest'">ORDER BY created_at DESC, id DESC</when>
+            <otherwise>ORDER BY sales_count DESC, id DESC</otherwise>
+        </choose>
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countPublic" resultType="long">
+        SELECT COUNT(*)
+        FROM product
+        WHERE <include refid="publicWhere"/>
+    </select>
+
+    <select id="findMerchantPage" resultType="com.team.ecommerce.catalog.entity.Product">
+        SELECT <include refid="productColumns"/>
+        FROM product
+        WHERE merchant_id = #{merchantId}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY created_at DESC, id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countMerchant" resultType="long">
+        SELECT COUNT(*)
+        FROM product
+        WHERE merchant_id = #{merchantId}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <select id="findById" resultType="com.team.ecommerce.catalog.entity.Product">
+        SELECT <include refid="productColumns"/>
+        FROM product
+        WHERE id = #{id}
+    </select>
+
+    <select id="findPending" resultType="com.team.ecommerce.catalog.entity.Product">
+        SELECT <include refid="productColumns"/>
+        FROM product
+        WHERE status = 0
+        ORDER BY created_at DESC, id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.team.ecommerce.catalog.entity.Product"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product (merchant_id, category_id, name, subtitle, main_image, sub_images,
+                             description, detail_html, price, status, audit_remark, sales_count)
+        VALUES (#{merchantId}, #{categoryId}, #{name}, #{subtitle}, #{mainImage}, #{subImages},
+                #{description}, #{detailHtml}, #{price}, #{status}, #{auditRemark}, #{salesCount})
+    </insert>
+
+    <update id="update" parameterType="com.team.ecommerce.catalog.entity.Product">
+        UPDATE product
+        SET category_id = #{categoryId},
+            name = #{name},
+            subtitle = #{subtitle},
+            main_image = #{mainImage},
+            sub_images = #{subImages},
+            description = #{description},
+            detail_html = #{detailHtml},
+            price = #{price},
+            status = #{status},
+            audit_remark = #{auditRemark}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE product
+        SET status = #{status}, audit_remark = #{auditRemark}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

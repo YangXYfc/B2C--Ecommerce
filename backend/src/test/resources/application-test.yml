@@ -1,0 +1,9 @@
+# 集成测试专用配置（profile=test）：只覆盖数据源，其余继承 application.yml（mybatis/jwt/multipart）。
+# 连接专用测试库 jd_ecommerce_test，绝不触碰开发库 jd_ecommerce。
+# createDatabaseIfNotExist=true 让首次运行自动建库（root 有建库权限）。
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/jd_ecommerce_test?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
+    password: ${DB_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
