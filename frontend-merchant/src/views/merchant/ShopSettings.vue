@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getShop, updateShop } from '@/api/mock/shop'
+import { getShop, updateShop } from '@/api/shop'
 import { ElMessage } from 'element-plus'
 
 const formRef = ref()
-const form = ref({
-  shopName: '', shopLogo: '', description: '', contactPhone: '',
-  customerServicePhone: '', returnPolicy: '', freeShippingThreshold: 0,
-})
+const form = ref({ shopName: '', shopLogo: '', description: '', contactPhone: '' })
 const loading = ref(false)
 
 onMounted(async () => {
@@ -19,9 +16,12 @@ async function handleSave() {
   const valid = await formRef.value?.validate().catch(() => false)
   if (!valid) return
   loading.value = true
-  await updateShop(form.value)
-  ElMessage.success('保存成功')
-  loading.value = false
+  try {
+    await updateShop(form.value)
+    ElMessage.success('保存成功')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -38,17 +38,8 @@ async function handleSave() {
       <el-form-item label="店铺描述" prop="description">
         <el-input v-model="form.description" type="textarea" :rows="3" />
       </el-form-item>
-      <el-form-item label="联系电话" prop="contactPhone">
+      <el-form-item label="联系电话" prop="contactPhone" :rules="[{ required: true, message: '请输入联系电话' }]">
         <el-input v-model="form.contactPhone" />
-      </el-form-item>
-      <el-form-item label="客服电话" prop="customerServicePhone">
-        <el-input v-model="form.customerServicePhone" />
-      </el-form-item>
-      <el-form-item label="退货政策" prop="returnPolicy">
-        <el-input v-model="form.returnPolicy" />
-      </el-form-item>
-      <el-form-item label="包邮门槛(元)" prop="freeShippingThreshold">
-        <el-input-number v-model="form.freeShippingThreshold" :min="0" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :loading="loading" @click="handleSave">保存</el-button>

@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getUserList, toggleUserStatus } from '@/api/mock/user'
+import { getUserList, toggleUserStatus } from '@/api/user'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const list = ref<any[]>([])
 const loading = ref(false)
-const query = ref({ username: '', status: '' })
+const query = ref({ keyword: '', status: '' })
 
 const roleMap: Record<string, string> = { ADMIN: '管理员', MERCHANT: '商家', USER: '用户' }
 
 async function fetchData() {
   loading.value = true
-  const res: any = await getUserList({ username: query.value.username || undefined, status: query.value.status })
+  const res: any = await getUserList({
+    keyword: query.value.keyword || undefined,
+    status: query.value.status || undefined,
+  })
   list.value = res.data.list
   loading.value = false
 }
@@ -31,19 +34,20 @@ onMounted(fetchData)
   <div class="page-container">
     <div class="page-header"><h2>用户管理</h2></div>
     <div class="search-bar">
-      <el-input v-model="query.username" placeholder="用户名" clearable style="width:180px" />
+      <el-input v-model="query.keyword" placeholder="用户名/昵称/手机号" clearable style="width:200px" />
       <el-select v-model="query.status" placeholder="状态" clearable style="width:120px">
         <el-option label="正常" :value="1" />
         <el-option label="禁用" :value="0" />
       </el-select>
       <el-button type="primary" @click="fetchData">搜索</el-button>
-      <el-button @click="query = { username: '', status: '' }; fetchData()">重置</el-button>
+      <el-button @click="query = { keyword: '', status: '' }; fetchData()">重置</el-button>
     </div>
     <el-table :data="list" v-loading="loading" border stripe>
       <el-table-column prop="id" label="ID" width="60" />
       <el-table-column prop="username" label="用户名" width="120" />
       <el-table-column prop="nickname" label="昵称" width="140" />
       <el-table-column prop="phone" label="手机号" width="140" />
+      <el-table-column prop="email" label="邮箱" min-width="160" show-overflow-tooltip />
       <el-table-column label="角色" width="90">
         <template #default="{ row }">
           <el-tag :type="row.role === 'ADMIN' ? 'danger' : row.role === 'MERCHANT' ? 'warning' : 'info'" size="small">

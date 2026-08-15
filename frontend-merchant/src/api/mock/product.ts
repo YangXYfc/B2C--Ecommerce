@@ -81,7 +81,7 @@ export async function onShelfProduct(id: number) {
   return { code: 200, message: '已上架' }
 }
 
-export async function updateStock(skuId: number, stock: number) {
+export async function updateStock(_skuId: number, _stock: number) {
   await delay()
   return { code: 200, message: '库存更新成功' }
 }

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -22,9 +23,15 @@ async function handleLogin() {
   if (!valid) return
   loading.value = true
   try {
-    // 开发阶段：直接模拟登录
-    localStorage.setItem('token', 'mock-token-merchant')
+    await authStore.login(form.value.username, form.value.password)
+    if (authStore.userInfo?.role !== 'MERCHANT') {
+      ElMessage.error('该账号不是商家账号，无法登录商家后台')
+      authStore.logout()
+      return
+    }
     router.push('/dashboard')
+  } catch {
+    // 错误提示已由 request 拦截器统一处理
   } finally {
     loading.value = false
   }

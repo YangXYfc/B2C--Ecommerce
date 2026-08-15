@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getProductDetail, createProduct, updateProduct, categories } from '@/api/mock/product'
+import { getProductDetail, createProduct, updateProduct } from '@/api/product'
+import { getCategories } from '@/api/category'
 import { ElMessage } from 'element-plus'
 
 const route = useRoute()
@@ -9,26 +10,35 @@ const router = useRouter()
 const isEdit = ref(false)
 const formRef = ref()
 const loading = ref(false)
+const categories = ref<any[]>([])
 
 const form = ref({
   name: '', subtitle: '', categoryId: null as number | null, mainImage: '',
-  description: '', detailHtml: '', price: 0,
+  description: '', detailHtml: '',
 })
 
-const skuList = ref([{ skuName: '', price: 0, originalPrice: 0, stock: 0 }])
+const skuList = ref([{ skuName: '', price: 0, originalPrice: 0, stock: 0, attributes: {} as Record<string, string>, skuImage: '' }])
 
 onMounted(async () => {
+  const catRes: any = await getCategories()
+  categories.value = catRes.data
+
   const id = route.params.id as string
   if (id) {
     isEdit.value = true
     const res: any = await getProductDetail(Number(id))
     const d = res.data
-    form.value = { name: d.name, subtitle: d.subtitle, categoryId: d.categoryId, mainImage: d.mainImage, description: d.description || '', detailHtml: d.detailHtml || '', price: d.price }
-    if (d.skus?.length) skuList.value = d.skus.map((s: any) => ({ skuName: s.skuName, price: s.price, originalPrice: s.originalPrice || 0, stock: s.stock || 0 }))
+    form.value = { categoryId: d.categoryId, name: d.name, subtitle: d.subtitle, mainImage: d.mainImage, description: d.description || '', detailHtml: d.detailHtml || '' }
+    if (d.skus?.length) {
+      skuList.value = d.skus.map((s: any) => ({
+        skuName: s.skuName, price: s.price, originalPrice: s.originalPrice || 0,
+        stock: s.stock || 0, attributes: s.attributes || {}, skuImage: s.skuImage || '',
+      }))
+    }
   }
 })
 
-function addSku() { skuList.value.push({ skuName: '', price: 0, originalPrice: 0, stock: 0 }) }
+function addSku() { skuList.value.push({ skuName: '', price: 0, originalPrice: 0, stock: 0, attributes: {}, skuImage: '' }) }
 function removeSku(idx: number) { skuList.value.splice(idx, 1) }
 
 async function handleSubmit() {
@@ -63,23 +73,20 @@ async function handleSubmit() {
           <el-option v-for="c in categories" :key="c.id" :label="c.name" :value="c.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="主图URL" prop="mainImage">
+      <el-form-item label="主图URL" prop="mainImage" :rules="[{ required: true, message: '请输入主图URL' }]">
         <el-input v-model="form.mainImage" placeholder="输入图片URL" />
       </el-form-item>
       <el-form-item label="描述" prop="description">
         <el-input v-model="form.description" type="textarea" :rows="3" />
       </el-form-item>
-      <el-form-item label="商品价格" prop="price" :rules="[{ required: true }]">
-        <el-input-number v-model="form.price" :min="0" :precision="2" />
-      </el-form-item>
 
-      <el-divider>商品规格 (SKU)</el-divider>
+      <el-divider>商品规格 (SKU，价格取最低 SKU 售价)</el-divider>
       <div v-for="(sku, idx) in skuList" :key="idx" style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
         <el-input v-model="sku.skuName" placeholder="规格名称" style="width:160px" />
         <el-input-number v-model="sku.price" :min="0" :precision="2" placeholder="售价" />
         <el-input-number v-model="sku.originalPrice" :min="0" :precision="2" placeholder="原价" />
         <el-input-number v-model="sku.stock" :min="0" placeholder="库存" />
-        <el-button v-if="skuList.length > 1" type="danger" :icon="'Delete'" circle size="small" @click="removeSku(idx)" />
+        <el-button v-if="skuList.length > 1" type="danger" circle size="small" @click="removeSku(idx)">删</el-button>
       </div>
       <el-button type="primary" plain @click="addSku" style="margin-bottom:20px">+ 添加规格</el-button>
 

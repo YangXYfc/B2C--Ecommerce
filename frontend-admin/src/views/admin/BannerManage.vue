@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getBannerList, createBanner, updateBanner, deleteBanner } from '@/api/mock/banner'
+import { getBannerList, createBanner, updateBanner, deleteBanner } from '@/api/banner'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const list = ref<any[]>([])
@@ -9,7 +9,7 @@ const loading = ref(false)
 const dialogVisible = ref(false)
 const isEdit = ref(false)
 const formRef = ref()
-const form = ref({ title: '', imageUrl: '', linkUrl: '', sort: 0, status: 1 })
+const form = ref({ title: '', imageUrl: '', linkUrl: '', sort: 0, enabled: true })
 const currentId = ref<number | null>(null)
 const submitLoading = ref(false)
 
@@ -23,14 +23,14 @@ async function fetchData() {
 function openCreate() {
   isEdit.value = false
   currentId.value = null
-  form.value = { title: '', imageUrl: '', linkUrl: '', sort: 0, status: 1 }
+  form.value = { title: '', imageUrl: '', linkUrl: '', sort: 0, enabled: true }
   dialogVisible.value = true
 }
 
 function openEdit(row: any) {
   isEdit.value = true
   currentId.value = row.id
-  form.value = { title: row.title, imageUrl: row.imageUrl, linkUrl: row.linkUrl, sort: row.sort, status: row.status }
+  form.value = { title: row.title, imageUrl: row.imageUrl, linkUrl: row.linkUrl, sort: row.sort, enabled: row.enabled }
   dialogVisible.value = true
 }
 
@@ -77,7 +77,7 @@ onMounted(fetchData)
       <el-table-column prop="sort" label="排序" width="80" />
       <el-table-column label="状态" width="80">
         <template #default="{ row }">
-          <el-switch :model-value="row.status === 1" disabled size="small" />
+          <el-switch :model-value="row.enabled" disabled size="small" />
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150">
@@ -102,8 +102,8 @@ onMounted(fetchData)
         <el-form-item label="排序" prop="sort">
           <el-input-number v-model="form.sort" :min="0" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
+        <el-form-item label="启用" prop="enabled">
+          <el-switch v-model="form.enabled" />
         </el-form-item>
       </el-form>
       <template #footer>

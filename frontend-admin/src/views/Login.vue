@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
+const authStore = useAuthStore()
 
 const formRef = ref()
 const form = ref({ username: '', password: '' })
@@ -17,8 +20,15 @@ async function handleLogin() {
   if (!valid) return
   loading.value = true
   try {
-    localStorage.setItem('token', 'mock-token-admin')
+    await authStore.login(form.value.username, form.value.password)
+    if (authStore.userInfo?.role !== 'ADMIN') {
+      ElMessage.error('该账号不是管理员账号，无法登录管理员后台')
+      authStore.logout()
+      return
+    }
     router.push('/dashboard')
+  } catch {
+    // 错误提示已由 request 拦截器统一处理
   } finally {
     loading.value = false
   }

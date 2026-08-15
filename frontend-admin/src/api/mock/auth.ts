@@ -2,7 +2,7 @@
 
 const delay = (ms = 300) => new Promise(r => setTimeout(r, ms))
 
-export async function loginApi(data: { username: string; password: string }) {
+export async function loginApi(_data: { username: string; password: string }) {
   await delay()
   return {
     code: 200,
