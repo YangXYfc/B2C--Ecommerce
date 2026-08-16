@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getRefundList, auditRefund, confirmReturn, refundStatusMap } from '@/api/mock/refund'
+import { getRefundList, auditRefund, confirmReturn, refundStatusMap } from '@/api/refund'
 import { ElMessage } from 'element-plus'
 
 const list = ref<any[]>([])
 const loading = ref(false)
-const query = ref({ refundNo: '', status: '' })
+const query = ref({ status: '' })
 
 const auditDialog = ref(false)
 const auditForm = ref({ action: 'approve', remark: '' })
@@ -14,7 +14,7 @@ const auditLoading = ref(false)
 
 async function fetchData() {
   loading.value = true
-  const res: any = await getRefundList({ refundNo: query.value.refundNo || undefined, status: query.value.status })
+  const res: any = await getRefundList({ status: query.value.status || undefined })
   list.value = res.data.list
   loading.value = false
 }
@@ -34,7 +34,10 @@ function openAudit(row: any) {
 
 async function handleAudit() {
   auditLoading.value = true
-  await auditRefund(currentRefund.value.id, auditForm.value)
+  await auditRefund(currentRefund.value.id, {
+    approved: auditForm.value.action === 'approve',
+    remark: auditForm.value.remark,
+  })
   ElMessage.success(auditForm.value.action === 'approve' ? '已同意退款' : '已拒绝退款')
   auditDialog.value = false
   auditLoading.value = false
@@ -43,7 +46,7 @@ async function handleAudit() {
 
 async function handleConfirmReturn(id: number) {
   await confirmReturn(id)
-  ElMessage.success('已确认收货')
+  ElMessage.success('已确认收货，退款完成')
   fetchData()
 }
 
@@ -54,17 +57,16 @@ onMounted(fetchData)
   <div class="page-container">
     <div class="page-header"><h2>退款处理</h2></div>
     <div class="search-bar">
-      <el-input v-model="query.refundNo" placeholder="退款编号" clearable style="width:220px" />
       <el-select v-model="query.status" placeholder="状态" clearable style="width:140px">
         <el-option v-for="(v, k) in refundStatusMap" :key="k" :label="v" :value="Number(k)" />
       </el-select>
       <el-button type="primary" @click="fetchData">搜索</el-button>
-      <el-button @click="query = { refundNo: '', status: '' }; fetchData()">重置</el-button>
+      <el-button @click="query = { status: '' }; fetchData()">重置</el-button>
     </div>
     <el-table :data="list" v-loading="loading" border stripe>
       <el-table-column prop="refundNo" label="退款编号" width="180" />
-      <el-table-column prop="orderNo" label="关联订单" width="180" />
-      <el-table-column prop="userName" label="用户" width="80" />
+      <el-table-column prop="orderId" label="订单ID" width="90" />
+      <el-table-column prop="userId" label="用户ID" width="90" />
       <el-table-column label="金额" width="100">
         <template #default="{ row }">¥{{ row.amount }}</template>
       </el-table-column>

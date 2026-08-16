@@ -28,7 +28,7 @@ function handleLogout() {
 <template>
   <div class="admin-layout">
     <div class="admin-sidebar">
-      <div style="height:56px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1)">
+      <div class="sidebar-logo">
         ⚙️ 管理员后台
       </div>
       <el-menu

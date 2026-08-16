@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
+const authStore = useAuthStore()
 
 const formRef = ref()
 const form = ref({ username: '', password: '' })
@@ -17,8 +20,15 @@ async function handleLogin() {
   if (!valid) return
   loading.value = true
   try {
-    localStorage.setItem('token', 'mock-token-admin')
+    await authStore.login(form.value.username, form.value.password)
+    if (authStore.userInfo?.role !== 'ADMIN') {
+      ElMessage.error('该账号不是管理员账号，无法登录管理员后台')
+      authStore.logout()
+      return
+    }
     router.push('/dashboard')
+  } catch {
+    // 错误提示已由 request 拦截器统一处理
   } finally {
     loading.value = false
   }
@@ -26,10 +36,13 @@ async function handleLogin() {
 </script>
 
 <template>
-  <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#f0f2f5">
-    <el-card style="width:400px;border-radius:8px">
+  <div class="login-page">
+    <el-card class="login-card">
       <template #header>
-        <div style="text-align:center;font-size:20px;font-weight:600">B2C 电商平台 - 管理员后台</div>
+        <div class="login-card-title">
+          <span class="login-card-icon">🛡️</span>
+          <span>B2C 电商平台 - 管理员后台</span>
+        </div>
       </template>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="0">
         <el-form-item prop="username">
@@ -44,9 +57,46 @@ async function handleLogin() {
           </el-button>
         </el-form-item>
       </el-form>
-      <div style="text-align:center;color:#909399;font-size:13px">
-        测试账号：admin / 123456
-      </div>
+      <div class="login-tip">测试账号：admin / 123456</div>
     </el-card>
   </div>
 </template>
+
+<style scoped>
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2f8 0%, #e2ebf6 50%, #f2f6fb 100%);
+}
+
+.login-card {
+  width: 400px;
+  border: none;
+  --el-card-border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(31, 45, 61, 0.14);
+}
+
+.login-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 19px;
+  font-weight: 600;
+  color: #303133;
+  letter-spacing: 1px;
+}
+
+.login-card-icon {
+  font-size: 22px;
+}
+
+.login-tip {
+  text-align: center;
+  color: #909399;
+  font-size: 13px;
+  margin-top: 4px;
+}
+</style>

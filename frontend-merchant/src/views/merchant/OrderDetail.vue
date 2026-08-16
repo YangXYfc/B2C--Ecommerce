@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { getOrderDetail, shipOrder, orderStatusMap } from '@/api/mock/order'
+import { getOrderDetail, shipOrder, orderStatusMap } from '@/api/order'
 import { ElMessage } from 'element-plus'
 
 const route = useRoute()
@@ -44,18 +44,12 @@ async function handleShip() {
         </el-descriptions-item>
         <el-descriptions-item label="下单时间">{{ order.createdAt }}</el-descriptions-item>
         <el-descriptions-item label="实付金额">¥{{ order.payAmount || order.totalAmount }}</el-descriptions-item>
-        <el-descriptions-item label="支付时间">{{ order.payTime || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="取消原因">{{ order.cancelReason || '-' }}</el-descriptions-item>
       </el-descriptions>
     </el-card>
 
     <el-card style="margin-bottom:16px">
       <template #header>收货地址</template>
-      <p v-if="order.addressSnapshot">
-        {{ order.addressSnapshot.name }} {{ order.addressSnapshot.phone }}
-        {{ order.addressSnapshot.province }}{{ order.addressSnapshot.city }}{{ order.addressSnapshot.district }}
-        {{ order.addressSnapshot.detail }}
-      </p>
+      <p>{{ order.addressSnapshot || '-' }}</p>
     </el-card>
 
     <el-card style="margin-bottom:16px">
@@ -83,7 +77,6 @@ async function handleShip() {
       <div v-if="order.logisticsCompany">
         <p>物流公司：{{ order.logisticsCompany }}</p>
         <p>物流单号：{{ order.logisticsNo }}</p>
-        <p v-if="order.shipTime">发货时间：{{ order.shipTime }}</p>
       </div>
       <div v-else-if="order.status === 1" style="text-align:center;padding:16px">
         <el-button type="primary" @click="shipDialog = true">去发货</el-button>

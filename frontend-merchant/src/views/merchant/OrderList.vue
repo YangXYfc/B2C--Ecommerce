@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getOrderList, orderStatusMap } from '@/api/mock/order'
-import { Search } from '@element-plus/icons-vue'
+import { getOrderList, orderStatusMap } from '@/api/order'
 
 const router = useRouter()
 const list = ref<any[]>([])
 const loading = ref(false)
-const query = ref({ orderNo: '', status: '' })
+const query = ref({ status: '' })
 
 async function fetchData() {
   loading.value = true
-  const res: any = await getOrderList({ orderNo: query.value.orderNo || undefined, status: query.value.status })
+  const res: any = await getOrderList({ status: query.value.status || undefined })
   list.value = res.data.list
   loading.value = false
 }
@@ -30,12 +29,11 @@ onMounted(fetchData)
   <div class="page-container">
     <div class="page-header"><h2>订单管理</h2></div>
     <div class="search-bar">
-      <el-input v-model="query.orderNo" placeholder="订单编号" clearable style="width:220px" />
       <el-select v-model="query.status" placeholder="状态" clearable style="width:120px">
         <el-option v-for="(v, k) in orderStatusMap" :key="k" :label="v" :value="Number(k)" />
       </el-select>
       <el-button type="primary" @click="fetchData">搜索</el-button>
-      <el-button @click="query = { orderNo: '', status: '' }; fetchData()">重置</el-button>
+      <el-button @click="query = { status: '' }; fetchData()">重置</el-button>
     </div>
     <el-table :data="list" v-loading="loading" border stripe>
       <el-table-column prop="orderNo" label="订单编号" width="180" />

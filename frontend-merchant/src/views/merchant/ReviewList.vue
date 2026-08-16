@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getReviewList, replyReview } from '@/api/mock/review'
+import { getReviewList, replyReview } from '@/api/review'
 import { ElMessage } from 'element-plus'
 
 const list = ref<any[]>([])
@@ -40,15 +40,8 @@ onMounted(fetchData)
   <div class="page-container">
     <div class="page-header"><h2>评价管理</h2></div>
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column label="商品" min-width="180">
-        <template #default="{ row }">
-          <div style="display:flex;align-items:center;gap:8px">
-            <img :src="row.productImage" style="width:40px;height:40px;object-fit:cover;border-radius:4px" />
-            <span>{{ row.productName }}</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="userName" label="用户" width="80" />
+      <el-table-column prop="productId" label="商品ID" width="90" />
+      <el-table-column prop="userId" label="用户ID" width="90" />
       <el-table-column label="评分" width="150">
         <template #default="{ row }">
           <el-rate :model-value="row.rating" disabled show-score size="small" />

@@ -2,12 +2,6 @@
 
 const delay = (ms = 300) => new Promise(r => setTimeout(r, ms))
 
-const actionMap: Record<string, string> = {
-  MERCHANT_AUDIT: '商家审核',
-  PRODUCT_AUDIT: '商品审核',
-  REFUND_ARBITRATE: '退款仲裁',
-  USER_DISABLE: '用户管理',
-}
 
 const logs: any[] = [
   { id: 1, adminName: '系统管理员', action: 'MERCHANT_AUDIT', targetType: 'MERCHANT', targetId: '1', detail: '{"action":"approve","remark":"审核通过"}', ipAddress: '192.168.1.100', createdAt: '2026-07-01 10:30:00' },

@@ -18,7 +18,7 @@ class GlobalExceptionHandlerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(new ThrowingController())
-                .setControllerAdvice(new GlobalExceptionHandler())
+                .setControllerAdvice(new TradeGlobalExceptionHandler())
                 .build();
     }
 

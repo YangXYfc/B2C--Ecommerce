@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class TradeGlobalExceptionHandler {
 
     @ExceptionHandler(FeatureNotImplementedException.class)
     ResponseEntity<ApiResponse<Void>> handleNotImplemented(FeatureNotImplementedException exception) {
