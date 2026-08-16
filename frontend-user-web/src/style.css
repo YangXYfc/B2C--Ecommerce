@@ -1,0 +1,65 @@
+:root {
+  --jd-red: #e4393c;
+  --jd-red-dark: #c81623;
+  --jd-bg: #f4f4f4;
+  --jd-text: #333;
+  --jd-text-light: #999;
+  --jd-border: #e8e8e8;
+  --jd-max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  background: var(--jd-bg);
+  color: var(--jd-text);
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.page-container {
+  max-width: var(--jd-max-width);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.page-card {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.price {
+  color: var(--jd-red);
+  font-weight: bold;
+}
+
+.price-symbol {
+  font-size: 0.85em;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--jd-text-light);
+}
+
+.empty-state .el-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
