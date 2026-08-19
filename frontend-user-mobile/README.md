@@ -40,6 +40,9 @@ npm run build:mp-weixin
 
 # 单元测试
 npm test -- --run
+
+# Playwright 消费者主链路测试（先保持 H5 开发服务运行）
+npm run test:e2e
 ```
 
 微信小程序构建完成后，在微信开发者工具中导入 `frontend-user-mobile/dist/build/mp-weixin`。
@@ -78,3 +81,10 @@ frontend-user-mobile/
 - 微信小程序：`dist/build/mp-weixin`
 
 生产环境文件中的 `https://api.example.com` 只是占位地址，部署前必须替换为实际 HTTPS API 域名；微信小程序还需要在后台配置 request/uploadFile 合法域名。
+
+## 常见问题
+
+- 微信开发者工具请求失败：检查小程序后台的 request/uploadFile 合法域名；本地联调可在开发者工具中临时关闭域名校验。
+- Android 无法访问接口：确认应用具有网络权限，真机与后端处于可互访网络；手机中的 `localhost` 指手机自身，不能代替电脑地址。
+- Android 阻止本地 HTTP：开发联调可配置明文流量策略，正式环境必须使用 HTTPS。
+- Mock 数据没有恢复：清除 H5 Local Storage 或微信开发者工具缓存，再重新进入应用。

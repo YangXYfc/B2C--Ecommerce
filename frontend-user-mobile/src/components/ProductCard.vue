@@ -1,5 +1,5 @@
 <template>
-  <view class="product" @tap="open">
+  <view :class="['product', { compact }]" @tap="open">
     <image class="product-image" :src="product.mainImage" mode="aspectFill" lazy-load />
     <view class="product-copy">
       <text class="product-name">{{ product.name }}</text>
@@ -14,7 +14,7 @@
 
 <script setup>
 import { formatPrice, formatSales } from '../utils/format.js'
-const props = defineProps({ product: { type: Object, required: true }, featured: Boolean })
+const props = defineProps({ product: { type: Object, required: true }, featured: Boolean, compact: Boolean })
 function open() { uni.navigateTo({ url: `/pages/product/detail?id=${props.product.id}` }) }
 </script>
 
@@ -28,4 +28,13 @@ function open() { uni.navigateTo({ url: `/pages/product/detail?id=${props.produc
 .price { color: var(--brand); font-size: 35rpx; font-weight: 700; }
 .currency { font-size: 23rpx; }
 .sales { color: var(--muted); font-size: 21rpx; }
+.compact { border-radius: 14rpx; }
+.compact .product-image { height: 210rpx; }
+.compact .product-copy { padding: 12rpx; }
+.compact .product-name { display: block; min-height: 0; overflow: hidden; font-size: 22rpx; line-height: 30rpx; text-overflow: ellipsis; white-space: nowrap; }
+.compact .product-subtitle { margin-top: 5rpx; font-size: 19rpx; }
+.compact .product-meta { margin-top: 10rpx; display: flex; gap: 6rpx; justify-content: flex-start; }
+.compact .price { flex: none; font-size: 26rpx; }
+.compact .currency { font-size: 18rpx; }
+.compact .sales { display: block; min-width: 0; overflow: hidden; font-size: 17rpx; text-overflow: ellipsis; white-space: nowrap; }
 </style>

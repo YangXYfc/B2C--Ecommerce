@@ -70,7 +70,7 @@ view, text, image, scroll-view, swiper, input, textarea, button {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--window-bottom, 0);
   z-index: 20;
   padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom));
   background: rgba(255,255,255,.98);

@@ -8,7 +8,8 @@
     "build:h5": "uni build -p h5",
     "dev:mp-weixin": "uni -p mp-weixin",
     "build:mp-weixin": "uni build -p mp-weixin",
-    "test": "vitest --config vitest.config.js"
+    "test": "vitest --config vitest.config.js",
+    "test:e2e": "playwright test tests/e2e/mobile-flow.spec.js"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-5020420260813003",
@@ -19,6 +20,7 @@
     "vue": "3.4.21"
   },
   "devDependencies": {
+    "@playwright/test": "1.62.1",
     "@dcloudio/types": "^3.4.31",
     "@dcloudio/vite-plugin-uni": "3.0.0-5020420260813003",
     "@vue/test-utils": "^2.4.6",

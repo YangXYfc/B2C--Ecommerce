@@ -23,13 +23,13 @@ function submit() {
 </script>
 
 <style scoped>
-.brand-header { padding: calc(24rpx + env(safe-area-inset-top)) 28rpx 22rpx; background: #fff; }
-.brand-line { height: 64rpx; display: flex; align-items: center; }
-.brand-mark { width: 54rpx; height: 54rpx; margin-right: 10rpx; }
-.brand-name { color: var(--brand); font-size: 44rpx; font-weight: 800; letter-spacing: 2rpx; }
+.brand-header { padding: calc(14rpx + env(safe-area-inset-top)) 28rpx 14rpx; background: #fff; }
+.brand-line { height: 54rpx; display: flex; align-items: center; }
+.brand-mark { width: 46rpx; height: 46rpx; margin-right: 8rpx; }
+.brand-name { color: var(--brand); font-size: 40rpx; font-weight: 800; letter-spacing: 2rpx; }
 .brand-divider { margin: 0 12rpx; color: #d5d5d5; }
-.brand-slogan { color: #555; font-size: 26rpx; }
-.search { margin-top: 14rpx; height: 84rpx; border: 2rpx solid var(--brand); border-radius: 999rpx; padding: 0 18rpx 0 30rpx; display: flex; align-items: center; gap: 16rpx; }
-.search input { flex: 1; font-size: 28rpx; }
-.search-action { color: var(--brand); font-size: 26rpx; font-weight: 600; padding: 18rpx; }
+.brand-slogan { color: #555; font-size: 24rpx; }
+.search { margin-top: 10rpx; height: 70rpx; border: 2rpx solid var(--brand); border-radius: 999rpx; padding: 0 14rpx 0 28rpx; display: flex; align-items: center; gap: 14rpx; }
+.search input { flex: 1; font-size: 26rpx; }
+.search-action { color: var(--brand); font-size: 24rpx; font-weight: 600; padding: 14rpx; }
 </style>
