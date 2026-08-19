@@ -31,7 +31,7 @@ const product = ref(null); const selectedSku = ref(null); const quantity = ref(1
 onLoad(async ({ id }) => { product.value = await api.getProduct(id); selectedSku.value = selectAvailableSku(product.value.skus) })
 function selectSku(sku) { if (sku.stock) { selectedSku.value = sku; quantity.value = 1 } }
 async function add() { await cartStore.add(selectedSku.value.id, quantity.value); uni.showToast({ title: '已加入购物车' }) }
-function buy() { uni.navigateTo({ url: `/pages/checkout/index?skuId=${selectedSku.value.id}&quantity=${quantity.value}` }) }
+function buy() { uni.navigateTo({ url: `/pages/checkout/index?productId=${product.value.id}&skuId=${selectedSku.value.id}&quantity=${quantity.value}` }) }
 </script>
 <style scoped>
 .detail-page { padding-bottom: 150rpx; }

@@ -120,7 +120,11 @@ async function handleRefund() {
     ElMessage.warning('请选择退款原因')
     return
   }
-  await createRefund({ orderId: order.value.id, ...refundForm })
+  await createRefund({
+    orderId: order.value.id,
+    amount: order.value.payAmount || order.value.totalAmount,
+    ...refundForm,
+  })
   ElMessage.success('退款申请已提交')
   showRefundDialog.value = false
   router.push('/refunds')

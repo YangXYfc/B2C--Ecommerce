@@ -1,8 +1,11 @@
 package com.team.ecommerce.api;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * 跨切面鉴权测试：公开接口免登录、受保护接口 401、角色路径 403。
@@ -10,12 +13,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 class SecurityApiTest extends AbstractApiTest {
 
+    @Test
+    void corsPreflight_openWithoutToken() throws Exception {
+        mockMvc.perform(options("/api/cart/items")
+                        .header(HttpHeaders.ORIGIN, "http://127.0.0.1:5174")
+                        .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpMethod.POST.name())
+                        .header(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS, HttpHeaders.AUTHORIZATION))
+                .andExpect(status().isOk());
+    }
+
     // 公开接口（WebConfig 放行的 excludePathPatterns）无需 token
     @Test
     void publicEndpoints_openWithoutToken() throws Exception {
         expectOk(doGet("/api/categories", null));
         expectOk(doGet("/api/products", null));
         expectOk(doGet("/api/products/1", null));
+        expectOk(doGet("/api/products/1/reviews", null));
+        expectOk(doGet("/api/banners", null));
         expectOk(doPost("/api/auth/login", null, java.util.Map.of("username", "user1", "password", "123456")));
     }
 

@@ -7,11 +7,15 @@ const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 export function request({ url, method = 'GET', data }) {
   return new Promise((resolve, reject) => {
     const token = storage.get('token', '')
+    const profile = storage.get('profile', null)
+    const header = {}
+    if (token) header.Authorization = `Bearer ${token}`
+    if (profile?.id) header['X-User-Id'] = String(profile.id)
     uni.request({
       url: `${baseURL}${url}`,
       method,
       data,
-      header: token ? { Authorization: `Bearer ${token}` } : {},
+      header,
       success(response) {
         if (response.statusCode === 401) {
           storage.remove('token')

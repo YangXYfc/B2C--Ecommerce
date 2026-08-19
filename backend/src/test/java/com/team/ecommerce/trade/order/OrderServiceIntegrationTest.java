@@ -35,6 +35,7 @@ class OrderServiceIntegrationTest {
 
         assertNotNull(order.id());
         assertNotNull(order.orderNo());
+        assertNotNull(order.items().get(0).productId());
         // First order returned is for the first merchant in grouping order
         assertEquals(OrderStatus.PENDING_PAYMENT.getCode(), order.status());
         // SKU1 stock was 500; after deduct 1 -> 499

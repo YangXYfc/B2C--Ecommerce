@@ -50,7 +50,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtAuthInterceptor)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/register", "/api/auth/login",
-                        "/api/categories", "/api/products", "/api/products/*");
+                        "/api/categories", "/api/products", "/api/products/*",
+                        "/api/products/*/reviews", "/api/banners", "/upload/**");
     }
 
     /** 上传目录静态资源映射：/upload/** → file:{upload.dir}/，访问无需 JWT。 */

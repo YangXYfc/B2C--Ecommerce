@@ -1,6 +1,6 @@
 # 悦选消费者端（B 角色）
 
-基于 uni-app、Vue 3 与 Pinia 的消费者移动端代码框架，同时支持 Android App 与微信小程序。当前版本覆盖开发文档中 B 角色的完整页面和接口骨架，默认使用本地 Mock 数据，可在 E 角色后端接口稳定后切换到真实 API。
+基于 uni-app、Vue 3 与 Pinia 的消费者移动端代码框架，同时支持 Android App 与微信小程序。当前版本覆盖开发文档中 B 角色的完整页面和接口骨架，开发环境默认连接 E 角色真实后端。
 
 ## 已包含的业务范围
 
@@ -11,7 +11,7 @@
 - 商品评价、退款申请、售后列表、退货物流与平台申诉入口
 - Mock/API 双数据源、接口适配层、Pinia 用户与购物车状态
 
-本模块刻意不实现 JWT 权限、真实支付、库存扣减、订单/退款状态机和真实 SQL 映射；这些由对应后端角色完成。页面通过 `src/api/index.js` 统一访问数据，后续接入时不需要改页面结构。
+页面通过 `src/api/index.js` 统一访问数据，并已适配后端两种响应包装、JWT、消费者身份头、分页、购物车、订单快照和售后字段。支付、库存与状态流转仍由后端负责。
 
 ## 环境要求
 
@@ -54,11 +54,11 @@ Android App 推荐使用 HBuilderX 打开 `frontend-user-mobile`，在“运行/
 开发环境 `.env.development` 默认：
 
 ```dotenv
-VITE_DATA_MODE=mock
+VITE_DATA_MODE=api
 VITE_API_BASE_URL=http://localhost:8080
 ```
 
-联调时将 `VITE_DATA_MODE` 改为 `api`，并把 `VITE_API_BASE_URL` 指向实际后端。真实请求当前按开发文档中的 `/api/auth`、`/api/products`、`/api/cart`、`/api/orders`、`/api/refunds` 等路径封装在 `src/api/index.js`。
+本地开发先启动 `http://localhost:8080` 的后端即可。需要离线使用 Mock 时，将 `VITE_DATA_MODE` 临时改为 `mock`；真实请求按开发文档中的 `/api/auth`、`/api/products`、`/api/cart`、`/api/orders`、`/api/refunds` 等路径封装在 `src/api/index.js`。
 
 Mock 数据保存在本地存储命名空间 `yuexuan` 中。演示账号为 `user1`，密码为 `123456`。清空浏览器/小程序本地存储可恢复初始演示数据。
 

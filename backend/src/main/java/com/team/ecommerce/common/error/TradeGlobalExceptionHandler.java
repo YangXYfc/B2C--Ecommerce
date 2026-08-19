@@ -1,6 +1,8 @@
 package com.team.ecommerce.common.error;
 
 import com.team.ecommerce.common.api.ApiResponse;
+import com.team.ecommerce.common.BizException;
+import com.team.ecommerce.common.Result;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class TradeGlobalExceptionHandler {
+
+    @ExceptionHandler(BizException.class)
+    ResponseEntity<Result<Void>> handleLegacyBusiness(BizException exception) {
+        return ResponseEntity.status(exception.getCode())
+                .body(Result.error(exception.getCode(), exception.getMessage()));
+    }
 
     @ExceptionHandler(FeatureNotImplementedException.class)
     ResponseEntity<ApiResponse<Void>> handleNotImplemented(FeatureNotImplementedException exception) {

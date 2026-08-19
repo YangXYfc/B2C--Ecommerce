@@ -1,8 +1,6 @@
 package com.team.ecommerce.common;
 
 import jakarta.validation.ConstraintViolationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -20,8 +18,6 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(BizException.class)
     public Result<Void> handleBiz(BizException e, HttpServletResponse response) {
@@ -61,10 +57,4 @@ public class GlobalExceptionHandler {
         return Result.error(ResultCode.NOT_FOUND);
     }
 
-    @ExceptionHandler(Exception.class)
-    public Result<Void> handleOther(Exception e, HttpServletResponse response) {
-        log.error("未处理异常", e);
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return Result.error(ResultCode.INTERNAL_SERVER_ERROR);
-    }
 }

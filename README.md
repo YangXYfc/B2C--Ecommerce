@@ -4,7 +4,7 @@
 
 ## B 角色消费者移动端
 
-`frontend-user-mobile/` 提供“悦选”消费者 Android App 与微信小程序的 uni-app / Vue 3 代码框架，覆盖商品浏览、购物车、下单、订单、评价、退款、地址与账户页面，并提供可直接运行的 Mock 数据。
+`frontend-user-mobile/` 提供“悦选”消费者 Android App 与微信小程序的 uni-app / Vue 3 代码框架，覆盖商品浏览、购物车、下单、订单、评价、退款、地址与账户页面。开发环境默认连接真实后端，Mock 仅作为显式备用模式。
 
 ```bash
 cd frontend-user-mobile
@@ -28,36 +28,40 @@ npm run dev:h5
 ## 运行环境
 
 - Java 25、Spring Boot 3.5.16、Maven、MyBatis
-- 默认使用内存 H2（自动执行 `schema-h2.sql` + `data-h2.sql`，含演示数据，开箱即用）
-- `dev` 配置连接 MySQL，读取环境变量 `DB_URL` / `DB_USERNAME` / `DB_PASSWORD`
+- 默认激活 `dev` 配置并连接 MySQL `jd_ecommerce`
+- 数据库账号默认 `root`，密码读取 `DB_PASSWORD`（未设置时为课程演示值 `123456`）
 
 ## 启动与测试
 
 ```bash
-# 默认启动（H2，含演示数据，端口 8080）
-mvn -f backend/pom.xml spring-boot:run
+# 1. 首次创建数据库（在 MySQL 客户端依次执行）
+database/schema.sql
+database/data.sql
 
-# 使用 MySQL
-DB_URL="jdbc:mysql://localhost:3306/jd_ecommerce?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai" \
-DB_USERNAME=root DB_PASSWORD=your_password \
-mvn -f backend/pom.xml spring-boot:run -Dspring-boot.run.profiles=dev
+# 2. 启动后端（Windows）
+cd backend
+set DB_PASSWORD=your_password
+mvnw.cmd spring-boot:run
 
-# 测试（53 个测试：路由注册、状态枚举、6 个服务集成测试、E2E 冒烟）
-mvn -f backend/pom.xml test
+# 3. 分别启动所需前端
+cd frontend-user-web && npm install && npm run dev
+cd frontend-user-mobile && npm install && npm run dev:h5
+cd frontend-merchant && npm install && npm run dev
+cd frontend-admin && npm install && npm run dev
 
-# 独立 E2E 冒烟脚本（启动应用后运行）
-python scripts/smoke_test.py
+# 4. 后端测试
+cd backend && mvnw.cmd test
 ```
 
-## 身份接入点（临时）
+## 身份接入
 
-D 角色的 JWT 尚未接入，Controller 通过请求头识别身份：
+四个前端均发送 `Authorization: Bearer <token>`。交易模块为兼容现有控制器，同时发送对应身份头：
 
 - `X-User-Id`：消费者 ID
 - `X-Merchant-Id`：商家 ID
 - `X-Admin-Id`：管理员 ID
 
-接入 JWT 后由安全上下文提供这些 ID。
+JWT 拦截器负责登录与角色校验；上述身份头用于现有交易接口的数据范围参数。
 
 ## 演示账号（H2 / data.sql）
 
@@ -70,7 +74,7 @@ D 角色的 JWT 尚未接入，Controller 通过请求头识别身份：
 ## 数据库
 
 - `database/schema.sql`、`database/data.sql`：权威 MySQL 脚本（原样来自开发文档附录）
-- `backend/src/main/resources/schema-h2.sql`、`data-h2.sql`：由脚本 `scripts/gen-h2-sql.py` 生成的 H2 兼容版本（去掉 MySQL 专属语法、去重全局索引名）
+- `backend/src/main/resources/schema-h2.sql`、`data-h2.sql`：保留的 H2 兼容脚本，当前默认运行配置不启用
 
 ## 设计说明
 

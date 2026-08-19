@@ -2,6 +2,7 @@ package com.team.ecommerce.trade.cart;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,9 +13,11 @@ import com.team.ecommerce.trade.cart.service.CartService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 class CartServiceIntegrationTest {
 
@@ -28,6 +31,9 @@ class CartServiceIntegrationTest {
         var cart = cartService.getCart(USER_ID);
         // data.sql: user 4 has 3 cart items
         assertEquals(3, cart.items().size());
+        assertNotNull(cart.items().get(0).productId());
+        assertNotNull(cart.items().get(0).merchantId());
+        assertNotNull(cart.items().get(0).merchantName());
         // selected items: id1 (4999*1) + id2 (59*2) = 5117
         assertEquals(0, cart.selectedAmount().compareTo(new java.math.BigDecimal("5117")));
     }
