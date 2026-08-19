@@ -1,0 +1,78 @@
+:root {
+  --brand: #e4393c;
+  --brand-dark: #c81623;
+  --bg: #f7f7f7;
+  --surface: #ffffff;
+  --text: #2f2f2f;
+  --muted: #8a8a8a;
+  --line: #ececec;
+  --soft-red: #fff1f1;
+  --success: #2f9b63;
+}
+
+view, text, image, scroll-view, swiper, input, textarea, button {
+  box-sizing: border-box;
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding-bottom: calc(36rpx + env(safe-area-inset-bottom));
+}
+
+.surface {
+  background: var(--surface);
+}
+
+.section {
+  padding: 28rpx 28rpx 0;
+}
+
+.section-title {
+  font-size: 36rpx;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.muted { color: var(--muted); }
+.price { color: var(--brand); font-weight: 700; }
+
+.primary-button {
+  border: 0;
+  border-radius: 999rpx;
+  background: var(--brand);
+  color: #fff;
+  font-size: 30rpx;
+  line-height: 88rpx;
+}
+
+.secondary-button {
+  border: 2rpx solid var(--brand);
+  border-radius: 999rpx;
+  background: #fff;
+  color: var(--brand);
+  font-size: 28rpx;
+  line-height: 76rpx;
+}
+
+.form-field {
+  min-height: 92rpx;
+  padding: 0 28rpx;
+  border-bottom: 2rpx solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.form-field input, .form-field textarea { flex: 1; font-size: 30rpx; }
+
+.bottom-action {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom));
+  background: rgba(255,255,255,.98);
+  border-top: 2rpx solid var(--line);
+}

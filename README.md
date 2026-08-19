@@ -2,6 +2,18 @@
 
 课程作业：平台统一监管、多个商家入驻、消费者购买的 B2C 商城 Demo。
 
+## B 角色消费者移动端
+
+`frontend-user-mobile/` 提供“悦选”消费者 Android App 与微信小程序的 uni-app / Vue 3 代码框架，覆盖商品浏览、购物车、下单、订单、评价、退款、地址与账户页面，并提供可直接运行的 Mock 数据。
+
+```bash
+cd frontend-user-mobile
+npm install
+npm run dev:h5
+```
+
+完整启动、双端构建与后端联调说明见 `frontend-user-mobile/README.md`。
+
 ## E 角色后端（本分支）
 
 本分支实现 E 角色负责的交易、售后和平台运营后端，包含：

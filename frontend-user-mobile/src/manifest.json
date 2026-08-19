@@ -1,0 +1,23 @@
+{
+  "name": "悦选",
+  "appid": "__UNI__YUEXUAN",
+  "description": "多商家电商消费者移动端",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "app-plus": {
+    "usingComponents": true,
+    "splashscreen": { "alwaysShowBeforeRender": true, "autoclose": true },
+    "distribute": {
+      "android": { "permissions": ["<uses-permission android:name=\"android.permission.INTERNET\"/>"] }
+    }
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": { "urlCheck": false }
+  },
+  "h5": {
+    "title": "悦选",
+    "router": { "mode": "hash" }
+  }
+}

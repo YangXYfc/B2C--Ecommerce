@@ -1,0 +1,13 @@
+<script setup>
+import { computed, reactive, ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { api } from '../../api/index.js'
+import { getRefundActions, getRefundStatus } from '../../utils/refund.js'
+import { formatPrice, formatDate } from '../../utils/format.js'
+const refund = ref(null); const form = reactive({ company: '', trackingNo: '', reason: '' }); const actions = computed(() => refund.value ? getRefundActions(refund.value.status) : [])
+async function load(id) { refund.value = await api.getRefund(id) }
+async function submit(type) { try { if (type === 'logistics') { if (!form.company || !form.trackingNo) return uni.showToast({ title: '请填写物流信息', icon: 'none' }); await api.submitReturnLogistics(refund.value.id, form) } else { if (!form.reason) return uni.showToast({ title: '请填写申诉理由', icon: 'none' }); await api.appealRefund(refund.value.id, form) } await load(refund.value.id); uni.showToast({ title: '提交成功' }) } catch (error) { uni.showToast({ title: error.message, icon: 'none' }) } }
+onLoad(({ id }) => load(id))
+</script>
+<template><view v-if="refund" class="page detail-page"><view class="status-box"><text class="status">{{ getRefundStatus(refund.status).text }}</text><text>申请已进入处理流程，请留意后续进度</text></view><view class="surface info"><view><text>退款金额</text><text class="price">¥{{ formatPrice(refund.amount) }}</text></view><view><text>申请原因</text><text>{{ refund.reason }}</text></view><view><text>售后单号</text><text>{{ refund.refundNo }}</text></view><view><text>申请时间</text><text>{{ formatDate(refund.createdAt) }}</text></view></view><view v-if="actions.includes('logistics')" class="surface form"><view class="form-field"><text>物流公司</text><input v-model="form.company" /></view><view class="form-field"><text>物流单号</text><input v-model="form.trackingNo" /></view><button class="primary-button" @tap="submit('logistics')">提交退货物流</button></view><view v-if="actions.includes('appeal')" class="surface form"><view class="form-field"><text>申诉理由</text><input v-model="form.reason" /></view><button class="primary-button" @tap="submit('appeal')">申请平台介入</button></view></view></template>
+<style scoped>.detail-page { padding: 0 24rpx; }.status-box { margin: 0 -24rpx; padding: 48rpx 28rpx; background: var(--brand); color: #fff; display: flex; flex-direction: column; gap: 12rpx; font-size: 25rpx; }.status { font-size: 38rpx; font-weight: 700; }.info,.form { margin-top: 20rpx; border-radius: 20rpx; overflow: hidden; }.info view { min-height: 88rpx; padding: 0 26rpx; display: flex; align-items: center; justify-content: space-between; border-bottom: 2rpx solid var(--line); font-size: 25rpx; }.form button { margin: 26rpx; }</style>
