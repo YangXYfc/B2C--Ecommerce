@@ -1,6 +1,5 @@
 package com.team.ecommerce.admin;
 
-import static com.team.ecommerce.support.RouteRegistryAssertions.assertNoRoute;
 import static com.team.ecommerce.support.RouteRegistryAssertions.assertRoute;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ class AdminRouteRegistryTest {
     @Autowired private RequestMappingHandlerMapping mappings;
 
     @Test
-    void registersOnlyDocumentedERolePlatformRoutes() {
+    void registersPlatformAndAdminManagementRoutes() {
         assertRoute(mappings, HttpMethod.GET, "/api/admin/dashboard");
         assertRoute(mappings, HttpMethod.GET, "/api/admin/logs");
         assertRoute(mappings, HttpMethod.GET, "/api/banners");
@@ -22,8 +21,8 @@ class AdminRouteRegistryTest {
         assertRoute(mappings, HttpMethod.POST, "/api/admin/banners");
         assertRoute(mappings, HttpMethod.PUT, "/api/admin/banners/{id}");
         assertRoute(mappings, HttpMethod.DELETE, "/api/admin/banners/{id}");
-        assertNoRoute(mappings, HttpMethod.GET, "/api/admin/users");
-        assertNoRoute(mappings, HttpMethod.GET, "/api/admin/merchants/pending");
-        assertNoRoute(mappings, HttpMethod.GET, "/api/admin/products/pending");
+        assertRoute(mappings, HttpMethod.GET, "/api/admin/users");
+        assertRoute(mappings, HttpMethod.GET, "/api/admin/merchants/pending");
+        assertRoute(mappings, HttpMethod.GET, "/api/admin/products/pending");
     }
 }

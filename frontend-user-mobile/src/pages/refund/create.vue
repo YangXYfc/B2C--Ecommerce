@@ -1,0 +1,12 @@
+<script setup>
+import { computed, reactive, ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { api } from '../../api/index.js'
+import { formatPrice } from '../../utils/format.js'
+const order = ref(null); const form = reactive({ orderId: 0, orderItemId: 0, type: 0, reason: '', amount: 0, description: '' }); const reasons = ['不喜欢 / 不想要了','商品破损','商品与描述不符','少件 / 漏发','其他']; const index = ref(0)
+const max = computed(() => Number(order.value?.payAmount ?? order.value?.totalAmount ?? 0))
+onLoad(async ({ orderId }) => { form.orderId = Number(orderId); order.value = await api.getOrder(orderId); form.orderItemId = order.value.items[0].skuId; form.amount = max.value; form.reason = reasons[0] })
+async function submit() { if (!form.reason) return uni.showToast({ title: '请选择退款原因', icon: 'none' }); if (Number(form.amount) <= 0 || Number(form.amount) > max.value) return uni.showToast({ title: '退款金额不正确', icon: 'none' }); const result = await api.createRefund(form); uni.redirectTo({ url: `/pages/refund/detail?id=${result.id}` }) }
+</script>
+<template><view v-if="order" class="page create-page"><view class="surface block"><view class="row"><text>售后类型</text><picker :range="['仅退款','退货退款']" @change="form.type = Number($event.detail.value)"><text>{{ ['仅退款','退货退款'][form.type] }} ›</text></picker></view><view class="row"><text>退款原因</text><picker :range="reasons" :value="index" @change="index = Number($event.detail.value); form.reason = reasons[index]"><text>{{ form.reason }} ›</text></picker></view><view class="row"><text>退款金额</text><view class="amount"><text class="price">¥</text><input v-model="form.amount" type="digit" /></view></view><text class="hint">最多可退 ¥{{ formatPrice(max) }}</text></view><textarea v-model="form.description" class="description" placeholder="补充问题描述，有助于更快处理（选填）" /><button class="primary-button" @tap="submit">提交申请</button></view></template>
+<style scoped>.create-page { padding: 24rpx; }.block,.description { border-radius: 20rpx; }.row { min-height: 96rpx; padding: 0 26rpx; display: flex; align-items: center; justify-content: space-between; border-bottom: 2rpx solid var(--line); }.row picker { color: var(--muted); font-size: 25rpx; }.amount { display: flex; align-items: center; }.amount input { width: 150rpx; text-align: right; }.hint { display: block; padding: 16rpx 26rpx 24rpx; color: var(--muted); font-size: 23rpx; text-align: right; }.description { width: 100%; min-height: 240rpx; margin-top: 20rpx; padding: 26rpx; background: #fff; }.create-page button { margin-top: 38rpx; }</style>

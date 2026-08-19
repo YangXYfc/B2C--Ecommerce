@@ -1,6 +1,5 @@
 package com.team.ecommerce.merchant;
 
-import static com.team.ecommerce.support.RouteRegistryAssertions.assertNoRoute;
 import static com.team.ecommerce.support.RouteRegistryAssertions.assertRoute;
 
 import org.junit.jupiter.api.Test;
@@ -14,12 +13,12 @@ class MerchantRouteRegistryTest {
     @Autowired private RequestMappingHandlerMapping mappings;
 
     @Test
-    void registersOnlyDocumentedERoleMerchantTradeRoutes() {
+    void registersMerchantTradeShopAndProductRoutes() {
         assertRoute(mappings, HttpMethod.GET, "/api/merchant/dashboard");
         assertRoute(mappings, HttpMethod.GET, "/api/merchant/orders");
         assertRoute(mappings, HttpMethod.GET, "/api/merchant/orders/{id}");
         assertRoute(mappings, HttpMethod.PUT, "/api/merchant/orders/{id}/ship");
-        assertNoRoute(mappings, HttpMethod.GET, "/api/merchant/shop");
-        assertNoRoute(mappings, HttpMethod.POST, "/api/merchant/products");
+        assertRoute(mappings, HttpMethod.GET, "/api/merchant/shop");
+        assertRoute(mappings, HttpMethod.POST, "/api/merchant/products");
     }
 }

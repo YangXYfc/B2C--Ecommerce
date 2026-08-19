@@ -23,12 +23,14 @@ export const useUserStore = defineStore('user', () => {
     token.value = data.token
     profile.value = data.user
     localStorage.setItem('jd_token', data.token)
+    if (data.user?.id) localStorage.setItem('jd_user_id', String(data.user.id))
   }
 
   function logout() {
     token.value = ''
     profile.value = null
     localStorage.removeItem('jd_token')
+    localStorage.removeItem('jd_user_id')
   }
 
   return { token, profile, isLoggedIn, fetchProfile, setAuth, logout }

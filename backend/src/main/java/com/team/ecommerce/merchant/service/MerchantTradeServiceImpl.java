@@ -12,6 +12,7 @@ import com.team.ecommerce.trade.order.dto.OrderItemView;
 import com.team.ecommerce.trade.order.entity.OrderEntity;
 import com.team.ecommerce.trade.order.mapper.OrderItemMapper;
 import com.team.ecommerce.trade.order.mapper.OrderMapper;
+import com.team.ecommerce.trade.order.mapper.ProductReadMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,10 +25,13 @@ public class MerchantTradeServiceImpl implements MerchantTradeService {
 
     private final OrderMapper orderMapper;
     private final OrderItemMapper orderItemMapper;
+    private final ProductReadMapper productReadMapper;
 
-    public MerchantTradeServiceImpl(OrderMapper orderMapper, OrderItemMapper orderItemMapper) {
+    public MerchantTradeServiceImpl(OrderMapper orderMapper, OrderItemMapper orderItemMapper,
+            ProductReadMapper productReadMapper) {
         this.orderMapper = orderMapper;
         this.orderItemMapper = orderItemMapper;
+        this.productReadMapper = productReadMapper;
     }
 
     @Override
@@ -86,11 +90,16 @@ public class MerchantTradeServiceImpl implements MerchantTradeService {
 
     private MerchantOrderView toMerchantOrderView(OrderEntity o) {
         var oitems = orderItemMapper.selectByOrderId(o.id());
-        var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(),
+        var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(), productIdOf(oi.productSkuId()),
                 oi.productName(), oi.skuName(), oi.productImage(),
                 oi.quantity(), oi.unitPrice(), oi.subtotal())).toList();
         return new MerchantOrderView(o.id(), o.orderNo(), o.userId(), o.totalAmount(),
                 o.payAmount(), o.status(), o.addressSnapshot(),
                 o.logisticsCompany(), o.logisticsNo(), o.createdAt(), itemViews);
+    }
+
+    private Long productIdOf(Long skuId) {
+        var sku = productReadMapper.selectSkuInfo(skuId);
+        return sku != null ? sku.productId() : null;
     }
 }

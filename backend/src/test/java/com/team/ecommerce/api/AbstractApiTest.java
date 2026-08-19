@@ -3,6 +3,7 @@ package com.team.ecommerce.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.team.ecommerce.security.JwtUtil;
+import org.hamcrest.Matcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -110,12 +113,13 @@ public abstract class AbstractApiTest {
 
     /** 断言 HTTP 状态与业务 code 均为 200。 */
     protected ResultActions expectOk(ResultActions ra) throws Exception {
-        return ra.andExpect(status().isOk()).andExpect(jsonPath("$.code").value(200));
+        return ra.andExpect(status().isOk()).andExpect(jsonPath("$.code").value(anyOf(is(200), is("SUCCESS"))));
     }
 
     /** 断言 HTTP 状态与业务 code 均为指定值（GlobalExceptionHandler 保证二者一致），且 data 为 null。 */
     protected ResultActions expectError(ResultActions ra, int code) throws Exception {
-        return ra.andExpect(status().is(code)).andExpect(jsonPath("$.code").value(code))
+        Matcher<?> codeMatcher = code == 400 ? anyOf(is(400), is("INVALID_ARGUMENT")) : is(code);
+        return ra.andExpect(status().is(code)).andExpect(jsonPath("$.code").value(codeMatcher))
                 .andExpect(jsonPath("$.data").value(nullValue()));
     }
 

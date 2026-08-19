@@ -51,16 +51,20 @@
         SELECT
             c.id           AS id,
             c.product_sku_id AS skuId,
+            p.id           AS productId,
             p.name         AS productName,
             sku.sku_name   AS skuName,
             COALESCE(sku.sku_image, p.main_image) AS imageUrl,
             sku.price      AS unitPrice,
             sku.stock      AS stock,
             c.quantity     AS quantity,
-            c.selected = 1 AS selected
+            c.selected = 1 AS selected,
+            p.merchant_id  AS merchantId,
+            m.shop_name    AS merchantName
         FROM cart c
         JOIN product_sku sku ON c.product_sku_id = sku.id
         JOIN product p ON sku.product_id = p.id
+        JOIN merchant m ON p.merchant_id = m.id
         WHERE c.user_id = #{userId}
     </select>
 

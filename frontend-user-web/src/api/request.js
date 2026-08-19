@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 
 const request = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 15000,
 })
 
@@ -12,13 +12,15 @@ request.interceptors.request.use((config) => {
   if (userStore.token) {
     config.headers.Authorization = `Bearer ${userStore.token}`
   }
+  const userId = userStore.profile?.id || localStorage.getItem('jd_user_id')
+  if (userId) config.headers['X-User-Id'] = String(userId)
   return config
 })
 
 request.interceptors.response.use(
   (response) => {
     const res = response.data
-    if (res.code !== 200) {
+    if (Number(res.code) !== 200 && res.code !== 'SUCCESS') {
       ElMessage.error(res.message || '请求失败')
       return Promise.reject(new Error(res.message || '请求失败'))
     }

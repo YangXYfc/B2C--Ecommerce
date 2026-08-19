@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
                 var oiWithId = new OrderItemEntity(orderItemMapper.lastInsertId(), oi.orderId(),
                         oi.productSkuId(), oi.productName(), oi.skuName(), oi.productImage(),
                         oi.quantity(), oi.unitPrice(), oi.subtotal(), oi.createdAt());
-                orderItemViews.add(new OrderItemView(oiWithId.id(), oiWithId.productSkuId(),
+                orderItemViews.add(new OrderItemView(oiWithId.id(), oiWithId.productSkuId(), ci.sku.productId(),
                         oiWithId.productName(), oiWithId.skuName(), oiWithId.productImage(),
                         oiWithId.quantity(), oiWithId.unitPrice(), oiWithId.subtotal()));
             }
@@ -148,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
         var orders = orderMapper.selectByUser(userId, query.status(), offset, query.size());
         var views = orders.stream().map(o -> {
             var oitems = orderItemMapper.selectByOrderId(o.id());
-            var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(),
+            var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(), productIdOf(oi.productSkuId()),
                     oi.productName(), oi.skuName(), oi.productImage(),
                     oi.quantity(), oi.unitPrice(), oi.subtotal())).toList();
             return new OrderSummaryView(o.id(), o.orderNo(), o.merchantId(),
@@ -165,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException(ErrorCode.INVALID_ARGUMENT, "订单不存在");
         }
         var oitems = orderItemMapper.selectByOrderId(orderId);
-        var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(),
+        var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(), productIdOf(oi.productSkuId()),
                 oi.productName(), oi.skuName(), oi.productImage(),
                 oi.quantity(), oi.unitPrice(), oi.subtotal())).toList();
         return new OrderDetailView(order.id(), order.orderNo(), order.merchantId(),
@@ -255,7 +255,7 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateById(updated);
 
         var oitems = orderItemMapper.selectByOrderId(orderId);
-        var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(),
+        var itemViews = oitems.stream().map(oi -> new OrderItemView(oi.id(), oi.productSkuId(), productIdOf(oi.productSkuId()),
                 oi.productName(), oi.skuName(), oi.productImage(),
                 oi.quantity(), oi.unitPrice(), oi.subtotal())).toList();
         return new OrderDetailView(updated.id(), updated.orderNo(), updated.merchantId(),
@@ -267,5 +267,10 @@ public class OrderServiceImpl implements OrderService {
     private static String generateOrderNo() {
         return "ORD" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
                 + String.format("%05d", new Random().nextInt(100000));
+    }
+
+    private Long productIdOf(Long skuId) {
+        var sku = productReadMapper.selectSkuInfo(skuId);
+        return sku != null ? sku.productId() : null;
     }
 }
