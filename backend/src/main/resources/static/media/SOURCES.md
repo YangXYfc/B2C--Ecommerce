@@ -19,3 +19,5 @@ These Unsplash photo IDs already appeared in `database/data.sql` and were retain
 - `categories/category-04-food.jpg`: fresh groceries, [Unsplash photo](https://unsplash.com/photos/D6Tu_L3chLE), photo ID `1542838132-92c53300491e`.
 
 The other category thumbnails reuse a matching versioned product photograph at a square crop. Product SKUs, order snapshots and review examples reuse the corresponding product media paths rather than duplicating files.
+
+`common/brand-mark.svg` is an original project asset created for the 悦选 consumer app and is not downloaded from a third party.

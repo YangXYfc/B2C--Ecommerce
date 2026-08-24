@@ -5,6 +5,7 @@ $mediaRoot = Join-Path $repositoryRoot 'backend/src/main/resources/static/media'
 
 $requiredFiles = @(
     'SOURCES.md',
+    'common/brand-mark.svg',
     'common/placeholder.webp',
     'products/product-01-phone.jpg',
     'products/product-02-phone.jpg',
@@ -36,7 +37,7 @@ foreach ($relativePath in $requiredFiles) {
     }
 
     $file = Get-Item -LiteralPath $absolutePath
-    if ($relativePath -ne 'SOURCES.md' -and $file.Length -le 1024) {
+    if ($relativePath -ne 'SOURCES.md' -and $file.Extension -ne '.svg' -and $file.Length -le 1024) {
         throw "Local media asset is smaller than 1 KB: $absolutePath"
     }
     $verified++
@@ -130,6 +131,14 @@ foreach ($sourceRoot in $frontendSourceRoots) {
     if ($remoteMatch) {
         throw "Remote seed/mock image remains in frontend source: $($remoteMatch.Path):$($remoteMatch.LineNumber)"
     }
+}
+
+$mobileSourceRoot = Join-Path $repositoryRoot 'frontend-user-mobile/src'
+$legacyStaticMatch = Get-ChildItem -LiteralPath $mobileSourceRoot -Recurse -File -Include *.js,*.vue |
+    Select-String -Pattern '/static/images/' |
+    Select-Object -First 1
+if ($legacyStaticMatch) {
+    throw "Legacy mobile image path remains: $($legacyStaticMatch.Path):$($legacyStaticMatch.LineNumber)"
 }
 
 Write-Host "Local media verification passed: $verified files checked."

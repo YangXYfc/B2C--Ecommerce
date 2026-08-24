@@ -1,7 +1,7 @@
 <template>
   <view class="brand-header">
     <view class="brand-line">
-      <image class="brand-mark" src="/static/images/brand-mark.png" mode="aspectFit" />
+      <image class="brand-mark" :src="brandMark" mode="aspectFit" />
       <text class="brand-name">悦选</text>
       <text class="brand-divider">｜</text>
       <text class="brand-slogan">发现你的生活好物</text>
@@ -15,8 +15,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { resolveMediaUrl } from '../utils/media.js'
 
 const keyword = ref('')
+const brandMark = resolveMediaUrl('/media/common/brand-mark.svg')
 function submit() {
   uni.navigateTo({ url: `/pages/product/list?keyword=${encodeURIComponent(keyword.value)}` })
 }

@@ -79,7 +79,7 @@ async function handleSubmit() {
         </el-select>
       </el-form-item>
       <el-form-item label="商品主图" prop="mainImage" :rules="[{ required: true, message: '请上传商品主图' }]">
-        <ImageUploader v-model="form.mainImage" />
+        <ImageUploader v-model="form.mainImage" data-testid="product-main-uploader" />
       </el-form-item>
       <el-form-item label="商品相册" prop="subImages">
         <ImageUploader v-model="form.subImages" multiple :limit="6" />

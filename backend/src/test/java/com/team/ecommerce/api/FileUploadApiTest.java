@@ -49,13 +49,14 @@ class FileUploadApiTest extends AbstractApiTest {
 
     @Test
     void upload_success_returnsDateDirAndHexFilename() throws Exception {
-        MvcResult result = expectOk(doUpload(tokenOf(MERCHANT1), image("a.png")))
+        ResultActions upload = doUpload(tokenOf(MERCHANT1), image("a.png"));
+        MvcResult result = upload.andReturn();
+        track(result);
+        expectOk(upload)
                 .andExpect(jsonPath("$.message").value("上传成功"))
                 .andExpect(jsonPath("$.data.url").value(matchesPattern(URL_PATTERN)))
                 .andExpect(jsonPath("$.data.url").value(startsWith("/upload/")))
-                .andExpect(jsonPath("$.data.url").value(not(containsString("http"))))
-                .andReturn();
-        track(result);
+                .andExpect(jsonPath("$.data.url").value(not(containsString("http"))));
     }
 
     @Test

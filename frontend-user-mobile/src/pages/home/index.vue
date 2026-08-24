@@ -18,7 +18,7 @@
         <view class="heading"><text class="section-title">今日精选</text><text class="more" @tap="openProducts">更多好物</text></view>
         <view v-if="featured" class="feature" @tap="openProduct(featured.id)">
           <view class="feature-copy"><text class="feature-kicker">轻薄高能 灵感随行</text><text class="feature-name">{{ featured.name }}</text><text class="feature-price">¥{{ formatPrice(featured.price) }}</text></view>
-          <image :src="featured.mainImage" mode="aspectFill" />
+          <image data-testid="featured-product-image" :src="featured.mainImage" mode="aspectFill" />
         </view>
         <view class="grid"><ProductCard v-for="product in gridProducts" :key="product.id" :product="product" compact /></view>
       </view>
@@ -33,14 +33,15 @@ import ProductCard from '../../components/ProductCard.vue'
 import StateBlock from '../../components/StateBlock.vue'
 import { api } from '../../api/index.js'
 import { formatPrice } from '../../utils/format.js'
+import { resolveMediaUrl } from '../../utils/media.js'
 
 const banners = ref([]); const categories = ref([]); const products = ref([]); const loading = ref(true)
 const sceneImages = [
-  '/static/images/product-phone.jpg',
-  '/static/images/scene-home.jpg',
-  '/static/images/product-dress.jpg',
-  '/static/images/scene-fruit.jpg',
-]
+  '/media/categories/category-01-digital.jpg',
+  '/media/categories/category-02-appliance.jpg',
+  '/media/categories/category-03-fashion.jpg',
+  '/media/categories/category-04-food.jpg',
+].map((path) => resolveMediaUrl(path))
 const featured = computed(() => products.value.find((product) => product.id === 2) || products.value[0])
 const gridProducts = computed(() => products.value.filter((product) => product.id !== featured.value?.id))
 
