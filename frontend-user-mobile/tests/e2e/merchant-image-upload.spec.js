@@ -23,6 +23,7 @@ test('merchant uploads a local image and submits its relative path', async ({ pa
   const loginResponse = productPage.login('merchant1', '123456')
   expect((await loginResponse).ok()).toBe(true)
   await expect(page).toHaveURL(/dashboard/)
+  await expect(page.getByText('悦选生活商家中心')).toBeVisible()
 
   await productPage.openCreateForm()
   await expect(page.getByRole('heading', { name: '发布商品' })).toBeVisible()

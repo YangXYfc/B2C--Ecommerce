@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { blockExternalImages } from './support/network.js'
 
-const baseUrl = process.env.E2E_BASE_URL || 'http://127.0.0.1:5173'
+const baseUrl = process.env.E2E_BASE_URL || 'http://127.0.0.1:5174'
 
 test.use({ viewport: { width: 390, height: 844 }, locale: 'zh-CN' })
 
