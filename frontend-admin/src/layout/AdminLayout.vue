@@ -29,7 +29,7 @@ function handleLogout() {
   <div class="admin-layout">
     <div class="admin-sidebar">
       <div class="sidebar-logo">
-        ⚙️ 管理员后台
+        ⚙️ 悦选生活平台管理
       </div>
       <el-menu
         :default-active="activeMenu"

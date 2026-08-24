@@ -41,7 +41,7 @@ async function handleLogin() {
       <template #header>
         <div class="login-card-title">
           <span class="login-card-icon">🛡️</span>
-          <span>B2C 电商平台 - 管理员后台</span>
+          <span>悦选生活平台管理</span>
         </div>
       </template>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="0">

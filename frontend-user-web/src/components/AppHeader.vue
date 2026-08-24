@@ -3,8 +3,8 @@
     <div class="header-top">
       <div class="page-container header-inner">
         <div class="logo" @click="$router.push('/')">
-          <span class="logo-text">JD</span>
-          <span class="logo-sub">商城</span>
+          <span class="logo-text">悦选</span>
+          <span class="logo-sub">生活</span>
         </div>
 
         <div class="search-box">

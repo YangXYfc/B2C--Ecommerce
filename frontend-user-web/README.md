@@ -1,6 +1,6 @@
-# 消费者 H5 网页端 (frontend-user-web)
+# 悦选生活商城 Web（A 角色）
 
-成员 A 负责的消费者端 H5 商城，基于 Vue 3 + Vite + Pinia + Element Plus 构建。
+成员 A 负责的“悦选生活”消费者 Web 商城，基于 Vue 3 + Vite + Pinia + Element Plus 构建。
 
 ## 功能清单
 

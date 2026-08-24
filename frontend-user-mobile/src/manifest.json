@@ -1,7 +1,7 @@
 {
-  "name": "悦选",
+  "name": "悦选生活",
   "appid": "__UNI__YUEXUAN",
-  "description": "多商家电商消费者移动端",
+  "description": "悦选生活多商家电商消费者移动端",
   "versionName": "0.1.0",
   "versionCode": "100",
   "transformPx": false,
@@ -17,7 +17,7 @@
     "setting": { "urlCheck": false }
   },
   "h5": {
-    "title": "悦选",
+    "title": "悦选生活",
     "router": { "mode": "hash" }
   }
 }

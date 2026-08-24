@@ -14,7 +14,7 @@ test('consumer can search, open a product, add it to cart, and reach checkout', 
   await expect(page).toHaveURL(/pages\/profile\/index/)
 
   await page.goto(baseUrl)
-  await expect(page.getByText('发现你的生活好物')).toBeVisible()
+  await expect(page.getByText('悦享好物，精选生活')).toBeVisible()
   const featuredImage = page.getByTestId('featured-product-image').locator('img')
   await expect(featuredImage).toHaveAttribute('src', /\/media\//)
   expect(await featuredImage.evaluate((image) => image.naturalWidth)).toBeGreaterThan(0)
