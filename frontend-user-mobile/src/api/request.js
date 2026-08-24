@@ -1,4 +1,4 @@
-import { unwrapResult } from './normalizers.js'
+import { normalizeMediaTree, unwrapResult } from './normalizers.js'
 import { createUniStorage } from '../utils/storage.js'
 
 const storage = createUniStorage('yuexuan')
@@ -23,7 +23,7 @@ export function request({ url, method = 'GET', data }) {
           reject(new Error('登录已过期'))
           return
         }
-        try { resolve(unwrapResult(response.data)) } catch (error) { reject(error) }
+        try { resolve(normalizeMediaTree(unwrapResult(response.data))) } catch (error) { reject(error) }
       },
       fail() { reject(new Error('网络连接失败，请稍后重试')) },
     })
