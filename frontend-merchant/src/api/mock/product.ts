@@ -10,12 +10,12 @@ export const categories = [
 ]
 
 const products: any[] = [
-  { id: 1, name: '智选 Pro 5G 手机 12GB+256GB 钛空灰', subtitle: '旗舰芯片 | 徕卡光学 | 120W快充', categoryId: 111, categoryName: '智能手机', mainImage: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&q=80', price: 4999.00, status: 1, salesCount: 1520, skuCount: 4, totalStock: 1150, createdAt: '2026-07-01 10:00:00' },
-  { id: 2, name: '畅享 Note 5G 手机 8GB+128GB 幻夜黑', subtitle: '大屏长续航 | 5000mAh', categoryId: 111, categoryName: '智能手机', mainImage: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=200&q=80', price: 1599.00, status: 1, salesCount: 3200, skuCount: 3, totalStock: 1800, createdAt: '2026-07-01 09:00:00' },
-  { id: 3, name: '轻薄本 Air 14 锐龙版 16GB+512GB', subtitle: '14英寸2.8K屏 | 锐龙7 7840H', categoryId: 121, categoryName: '笔记本', mainImage: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&q=80', price: 4299.00, status: 1, salesCount: 860, skuCount: 2, totalStock: 300, createdAt: '2026-07-01 08:00:00' },
-  { id: 4, name: '65W GaN氮化镓充电器 三口快充', subtitle: '小巧便携 | 兼容多设备', categoryId: 13, categoryName: '数码配件', mainImage: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=200&q=80', price: 129.00, status: 1, salesCount: 5800, skuCount: 1, totalStock: 2000, createdAt: '2026-07-01 07:00:00' },
-  { id: 7, name: '4K激光投影电视 100英寸', subtitle: '影院级巨幕 | 护眼无屏闪', categoryId: 21, categoryName: '大家电', mainImage: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=200&q=80', price: 8999.00, status: 1, salesCount: 120, skuCount: 1, totalStock: 50, createdAt: '2026-07-02 10:00:00' },
-  { id: 9, name: '折叠屏手机 Flip 5G 12GB+512GB', subtitle: '内外双屏 | 悬停自拍', categoryId: 111, categoryName: '智能手机', mainImage: 'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=200&q=80', price: 7999.00, status: 3, salesCount: 0, skuCount: 1, totalStock: 100, createdAt: '2026-07-03 09:00:00' },
+  { id: 1, name: '智选 Pro 5G 手机 12GB+256GB 钛空灰', subtitle: '旗舰芯片 | 徕卡光学 | 120W快充', categoryId: 111, categoryName: '智能手机', mainImage: '/media/products/product-01-phone.jpg', price: 4999.00, status: 1, salesCount: 1520, skuCount: 4, totalStock: 1150, createdAt: '2026-07-01 10:00:00' },
+  { id: 2, name: '畅享 Note 5G 手机 8GB+128GB 幻夜黑', subtitle: '大屏长续航 | 5000mAh', categoryId: 111, categoryName: '智能手机', mainImage: '/media/products/product-02-phone.jpg', price: 1599.00, status: 1, salesCount: 3200, skuCount: 3, totalStock: 1800, createdAt: '2026-07-01 09:00:00' },
+  { id: 3, name: '轻薄本 Air 14 锐龙版 16GB+512GB', subtitle: '14英寸2.8K屏 | 锐龙7 7840H', categoryId: 121, categoryName: '笔记本', mainImage: '/media/products/product-03-laptop.jpg', price: 4299.00, status: 1, salesCount: 860, skuCount: 2, totalStock: 300, createdAt: '2026-07-01 08:00:00' },
+  { id: 4, name: '65W GaN氮化镓充电器 三口快充', subtitle: '小巧便携 | 兼容多设备', categoryId: 13, categoryName: '数码配件', mainImage: '/media/products/product-04-charger.jpg', price: 129.00, status: 1, salesCount: 5800, skuCount: 1, totalStock: 2000, createdAt: '2026-07-01 07:00:00' },
+  { id: 7, name: '4K激光投影电视 100英寸', subtitle: '影院级巨幕 | 护眼无屏闪', categoryId: 21, categoryName: '大家电', mainImage: '/media/products/product-07-projector.jpg', price: 8999.00, status: 1, salesCount: 120, skuCount: 1, totalStock: 50, createdAt: '2026-07-02 10:00:00' },
+  { id: 9, name: '折叠屏手机 Flip 5G 12GB+512GB', subtitle: '内外双屏 | 悬停自拍', categoryId: 111, categoryName: '智能手机', mainImage: '/media/products/product-09-foldable.jpg', price: 7999.00, status: 3, salesCount: 0, skuCount: 1, totalStock: 100, createdAt: '2026-07-03 09:00:00' },
 ]
 
 let nextId = 10

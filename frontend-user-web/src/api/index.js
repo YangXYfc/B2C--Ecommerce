@@ -32,7 +32,11 @@ export const uploadImage = (file) => {
 // 商品
 export const getBanners = () => USE_MOCK ? mockApi.getBanners() : request.get('/banners')
 export const getCategories = () => USE_MOCK ? mockApi.getCategories() : request.get('/categories')
-export const getProducts = (params = {}) => USE_MOCK ? mockApi.getProducts(params) : request.get('/products', { params: { ...params, sort: ({ price_asc: 'priceAsc', price_desc: 'priceDesc' })[params.sort] || params.sort } })
+export const getProducts = async (params = {}) => {
+  if (USE_MOCK) return mockApi.getProducts(params)
+  const page = await request.get('/products', { params: { ...params, sort: ({ price_asc: 'priceAsc', price_desc: 'priceDesc' })[params.sort] || params.sort } })
+  return { ...page, records: (page.records || []).map(normalizeProduct) }
+}
 export const getProductDetail = async (id) => USE_MOCK ? mockApi.getProductDetail(id) : normalizeProduct(await request.get(`/products/${id}`))
 export const getProductReviews = async (id) => USE_MOCK ? mockApi.getProductReviews(id) : normalizeReviews(await request.get(`/products/${id}/reviews`))
 

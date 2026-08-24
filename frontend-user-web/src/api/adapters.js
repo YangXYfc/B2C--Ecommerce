@@ -1,3 +1,5 @@
+const fallbackImage = '/media/common/placeholder.webp'
+
 function parseAddressSnapshot(value) {
   if (!value || typeof value === 'object') return value || {}
   try { return JSON.parse(value) } catch { return { detail: value } }
@@ -11,7 +13,7 @@ export function normalizeCart(value = {}) {
       productId: item.productId,
       productName: item.productName,
       skuName: item.skuName,
-      productImage: item.imageUrl,
+      productImage: item.imageUrl || fallbackImage,
       price: item.unitPrice,
       stock: item.stock,
       quantity: item.quantity,
@@ -24,7 +26,17 @@ export function normalizeCart(value = {}) {
 }
 
 export function normalizeProduct(value = {}) {
-  return { ...value, skus: (value.skus || []).map((sku) => ({ ...sku, name: sku.skuName })) }
+  const mainImage = value.mainImage || fallbackImage
+  return {
+    ...value,
+    mainImage,
+    subImages: (value.subImages || []).filter(Boolean),
+    skus: (value.skus || []).map((sku) => ({
+      ...sku,
+      name: sku.skuName,
+      skuImage: sku.skuImage || mainImage,
+    })),
+  }
 }
 
 export function normalizeOrder(value = {}) {
@@ -32,7 +44,11 @@ export function normalizeOrder(value = {}) {
     ...value,
     merchantName: value.merchantName || `商家 ${value.merchantId}`,
     addressSnapshot: parseAddressSnapshot(value.addressSnapshot),
-    items: (value.items || []).map((item) => ({ ...item, price: item.unitPrice, image: item.productImage })),
+    items: (value.items || []).map((item) => ({
+      ...item,
+      price: item.unitPrice,
+      image: item.productImage || fallbackImage,
+    })),
   }
 }
 

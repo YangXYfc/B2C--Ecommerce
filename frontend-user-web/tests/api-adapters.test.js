@@ -36,6 +36,12 @@ test('real order DTO is mapped to address and review fields used by the web UI',
   assert.equal(result.items[0].productId, 1)
 })
 
+test('missing product images use the versioned local placeholder', () => {
+  const result = adapters.normalizeProduct?.({ id: 1, name: '无图商品', skus: [{}] })
+  assert.equal(result.mainImage, '/media/common/placeholder.webp')
+  assert.equal(result.skus[0].skuImage, '/media/common/placeholder.webp')
+})
+
 test('real reviews page and merchant application are mapped to backend contracts', () => {
   assert.deepEqual(adapters.normalizeReviews?.({ records: [{ id: 1, userId: 4, rating: 5 }], total: 1 }), [{ id: 1, userId: 4, nickname: '用户4', rating: 5 }])
   assert.deepEqual(

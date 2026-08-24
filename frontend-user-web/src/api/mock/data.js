@@ -6,15 +6,15 @@ export const mockUsers = [
 ]
 
 export const mockMerchants = [
-  { id: 1, userId: 2, shopName: '数码旗舰店', shopLogo: 'https://img.jd-demo.com/shop/logo1.png' },
-  { id: 2, userId: 3, shopName: '服饰优选店', shopLogo: 'https://img.jd-demo.com/shop/logo2.png' },
+  { id: 1, userId: 2, shopName: '数码旗舰店', shopLogo: '/media/shops/shop-01-digital.jpg' },
+  { id: 2, userId: 3, shopName: '服饰优选店', shopLogo: '/media/shops/shop-02-fashion.jpg' },
 ]
 
 export const mockCategories = [
-  { id: 1, name: '手机数码', parentId: 0, sort: 1, icon: 'https://img.jd-demo.com/cat/phone.png' },
-  { id: 2, name: '家用电器', parentId: 0, sort: 2, icon: 'https://img.jd-demo.com/cat/appliance.png' },
-  { id: 3, name: '服饰鞋包', parentId: 0, sort: 3, icon: 'https://img.jd-demo.com/cat/clothing.png' },
-  { id: 4, name: '食品生鲜', parentId: 0, sort: 4, icon: 'https://img.jd-demo.com/cat/food.png' },
+  { id: 1, name: '手机数码', parentId: 0, sort: 1, icon: '/media/categories/category-01-digital.jpg' },
+  { id: 2, name: '家用电器', parentId: 0, sort: 2, icon: '/media/categories/category-02-appliance.jpg' },
+  { id: 3, name: '服饰鞋包', parentId: 0, sort: 3, icon: '/media/categories/category-03-fashion.jpg' },
+  { id: 4, name: '食品生鲜', parentId: 0, sort: 4, icon: '/media/categories/category-04-food.jpg' },
   { id: 11, name: '手机通讯', parentId: 1, sort: 1 },
   { id: 12, name: '电脑办公', parentId: 1, sort: 2 },
   { id: 13, name: '数码配件', parentId: 1, sort: 3 },
@@ -30,36 +30,36 @@ export const mockCategories = [
 ]
 
 export const mockProducts = [
-  { id: 1, merchantId: 1, categoryId: 111, name: '智选 Pro 5G 手机 12GB+256GB 钛空灰', subtitle: '旗舰芯片 | 徕卡光学 | 120W快充', mainImage: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80', subImages: ['https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80', 'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=900&q=80'], description: '搭载最新旗舰处理器，6.7英寸OLED屏幕，5000mAh大电池，支持120W有线快充和50W无线快充。', detailHtml: '<p>产品详情：旗舰处理器，徕卡四摄系统，拍照体验出众。</p>', price: 4999, status: 1, salesCount: 1520 },
-  { id: 2, merchantId: 1, categoryId: 111, name: '畅享 Note 5G 手机 8GB+128GB 幻夜黑', subtitle: '大屏长续航 | 5000mAh', mainImage: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80', subImages: ['https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80'], description: '6.8英寸大屏，5000mAh超大电池，支持33W快充，后置6400万像素三摄。', detailHtml: '<p>大屏长续航，性价比之选。</p>', price: 1599, status: 1, salesCount: 3200 },
-  { id: 3, merchantId: 1, categoryId: 121, name: '轻薄本 Air 14 锐龙版 16GB+512GB', subtitle: '14英寸2.8K屏 | 锐龙7 7840H', mainImage: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=80', subImages: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80'], description: '14英寸2.8K OLED屏幕，AMD锐龙7 7840H处理器，16GB LPDDR5内存，512GB NVMe SSD。', detailHtml: '<p>1.2kg轻薄机身，办公学习利器。</p>', price: 4299, status: 1, salesCount: 860 },
-  { id: 4, merchantId: 1, categoryId: 13, name: '65W GaN氮化镓充电器 三口快充', subtitle: '小巧便携 | 兼容多设备', mainImage: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=900&q=80', subImages: [], description: '65W GaN氮化镓快充，支持PD/PPS/QC等多种协议。', detailHtml: '<p>双USB-C+USB-A三口设计，折叠插脚便携出行。</p>', price: 129, status: 1, salesCount: 5800 },
-  { id: 5, merchantId: 2, categoryId: 311, name: '纯棉短袖T恤 男款 100%新疆棉', subtitle: '透气舒适 | 多色可选', mainImage: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80', subImages: ['https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=900&q=80'], description: '100%新疆长绒棉，260g重磅面料，精梳工艺。', detailHtml: '<p>领口加固不易变形，多色多码可选。</p>', price: 59, status: 1, salesCount: 8900 },
-  { id: 6, merchantId: 2, categoryId: 321, name: '法式碎花连衣裙 夏季新款', subtitle: '显瘦版型 | 优雅气质', mainImage: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=80', subImages: [], description: '法式方领设计，高腰A字版型显瘦，雪纺面料飘逸舒适。', detailHtml: '<p>适合日常和约会穿着。</p>', price: 159, status: 1, salesCount: 2300 },
-  { id: 7, merchantId: 1, categoryId: 21, name: '4K激光投影电视 100英寸', subtitle: '影院级巨幕 | 护眼无屏闪', mainImage: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=80', subImages: [], description: '4K分辨率激光投影，100英寸超大画面，3500ANSI流明。', detailHtml: '<p>MEMC运动补偿，哈曼卡顿音响。</p>', price: 8999, status: 1, salesCount: 120 },
+  { id: 1, merchantId: 1, categoryId: 111, name: '智选 Pro 5G 手机 12GB+256GB 钛空灰', subtitle: '旗舰芯片 | 徕卡光学 | 120W快充', mainImage: '/media/products/product-01-phone.jpg', subImages: ['/media/products/product-02-phone.jpg', '/media/products/product-09-foldable.jpg'], description: '搭载最新旗舰处理器，6.7英寸OLED屏幕，5000mAh大电池，支持120W有线快充和50W无线快充。', detailHtml: '<p>产品详情：旗舰处理器，徕卡四摄系统，拍照体验出众。</p>', price: 4999, status: 1, salesCount: 1520 },
+  { id: 2, merchantId: 1, categoryId: 111, name: '畅享 Note 5G 手机 8GB+128GB 幻夜黑', subtitle: '大屏长续航 | 5000mAh', mainImage: '/media/products/product-02-phone.jpg', subImages: ['/media/products/product-01-phone.jpg'], description: '6.8英寸大屏，5000mAh超大电池，支持33W快充，后置6400万像素三摄。', detailHtml: '<p>大屏长续航，性价比之选。</p>', price: 1599, status: 1, salesCount: 3200 },
+  { id: 3, merchantId: 1, categoryId: 121, name: '轻薄本 Air 14 锐龙版 16GB+512GB', subtitle: '14英寸2.8K屏 | 锐龙7 7840H', mainImage: '/media/products/product-03-laptop.jpg', subImages: ['/media/products/laptop-detail-01.jpg'], description: '14英寸2.8K OLED屏幕，AMD锐龙7 7840H处理器，16GB LPDDR5内存，512GB NVMe SSD。', detailHtml: '<p>1.2kg轻薄机身，办公学习利器。</p>', price: 4299, status: 1, salesCount: 860 },
+  { id: 4, merchantId: 1, categoryId: 13, name: '65W GaN氮化镓充电器 三口快充', subtitle: '小巧便携 | 兼容多设备', mainImage: '/media/products/product-04-charger.jpg', subImages: [], description: '65W GaN氮化镓快充，支持PD/PPS/QC等多种协议。', detailHtml: '<p>双USB-C+USB-A三口设计，折叠插脚便携出行。</p>', price: 129, status: 1, salesCount: 5800 },
+  { id: 5, merchantId: 2, categoryId: 311, name: '纯棉短袖T恤 男款 100%新疆棉', subtitle: '透气舒适 | 多色可选', mainImage: '/media/products/product-05-tshirt.jpg', subImages: ['/media/products/tshirt-detail-01.jpg'], description: '100%新疆长绒棉，260g重磅面料，精梳工艺。', detailHtml: '<p>领口加固不易变形，多色多码可选。</p>', price: 59, status: 1, salesCount: 8900 },
+  { id: 6, merchantId: 2, categoryId: 321, name: '法式碎花连衣裙 夏季新款', subtitle: '显瘦版型 | 优雅气质', mainImage: '/media/products/product-06-dress.jpg', subImages: [], description: '法式方领设计，高腰A字版型显瘦，雪纺面料飘逸舒适。', detailHtml: '<p>适合日常和约会穿着。</p>', price: 159, status: 1, salesCount: 2300 },
+  { id: 7, merchantId: 1, categoryId: 21, name: '4K激光投影电视 100英寸', subtitle: '影院级巨幕 | 护眼无屏闪', mainImage: '/media/products/product-07-projector.jpg', subImages: [], description: '4K分辨率激光投影，100英寸超大画面，3500ANSI流明。', detailHtml: '<p>MEMC运动补偿，哈曼卡顿音响。</p>', price: 8999, status: 1, salesCount: 120 },
 ]
 
 export const mockSkus = [
-  { id: 1, productId: 1, skuName: '智选Pro 5G 钛空灰 12GB+256GB', price: 4999, originalPrice: 5499, stock: 500, attributes: { 颜色: '钛空灰', 版本: '12GB+256GB' }, skuImage: 'https://img.jd-demo.com/sku/s1.jpg' },
-  { id: 2, productId: 1, skuName: '智选Pro 5G 雪山白 12GB+256GB', price: 4999, originalPrice: 5499, stock: 300, attributes: { 颜色: '雪山白', 版本: '12GB+256GB' }, skuImage: 'https://img.jd-demo.com/sku/s2.jpg' },
-  { id: 3, productId: 1, skuName: '智选Pro 5G 钛空灰 16GB+512GB', price: 5499, originalPrice: 5999, stock: 200, attributes: { 颜色: '钛空灰', 版本: '16GB+512GB' }, skuImage: 'https://img.jd-demo.com/sku/s1.jpg' },
-  { id: 5, productId: 2, skuName: '畅享Note 5G 幻夜黑 8GB+128GB', price: 1599, originalPrice: 1799, stock: 800, attributes: { 颜色: '幻夜黑', 版本: '8GB+128GB' }, skuImage: 'https://img.jd-demo.com/sku/s5.jpg' },
-  { id: 6, productId: 2, skuName: '畅享Note 5G 晨曦金 8GB+128GB', price: 1599, originalPrice: 1799, stock: 600, attributes: { 颜色: '晨曦金', 版本: '8GB+128GB' }, skuImage: 'https://img.jd-demo.com/sku/s6.jpg' },
-  { id: 8, productId: 3, skuName: 'Air14 锐龙版 16GB+512GB 银色', price: 4299, originalPrice: 4999, stock: 200, attributes: { 颜色: '银色', 配置: '16GB+512GB' }, skuImage: 'https://img.jd-demo.com/sku/s8.jpg' },
-  { id: 10, productId: 4, skuName: '65W GaN充电器 白色', price: 129, originalPrice: 159, stock: 2000, attributes: { 颜色: '白色' }, skuImage: 'https://img.jd-demo.com/sku/s10.jpg' },
-  { id: 11, productId: 5, skuName: 'T恤 白色 L', price: 59, originalPrice: 89, stock: 500, attributes: { 颜色: '白色', 尺码: 'L' }, skuImage: 'https://img.jd-demo.com/sku/s11.jpg' },
-  { id: 12, productId: 5, skuName: 'T恤 白色 XL', price: 59, originalPrice: 89, stock: 500, attributes: { 颜色: '白色', 尺码: 'XL' }, skuImage: 'https://img.jd-demo.com/sku/s12.jpg' },
-  { id: 13, productId: 5, skuName: 'T恤 黑色 L', price: 59, originalPrice: 89, stock: 500, attributes: { 颜色: '黑色', 尺码: 'L' }, skuImage: 'https://img.jd-demo.com/sku/s13.jpg' },
-  { id: 16, productId: 6, skuName: '碎花连衣裙 S', price: 159, originalPrice: 259, stock: 200, attributes: { 颜色: '碎花', 尺码: 'S' }, skuImage: 'https://img.jd-demo.com/sku/s16.jpg' },
-  { id: 17, productId: 6, skuName: '碎花连衣裙 M', price: 159, originalPrice: 259, stock: 300, attributes: { 颜色: '碎花', 尺码: 'M' }, skuImage: 'https://img.jd-demo.com/sku/s17.jpg' },
-  { id: 19, productId: 7, skuName: '激光投影电视 100英寸', price: 8999, originalPrice: 10999, stock: 50, attributes: { 规格: '100英寸' }, skuImage: 'https://img.jd-demo.com/sku/s19.jpg' },
+  { id: 1, productId: 1, skuName: '智选Pro 5G 钛空灰 12GB+256GB', price: 4999, originalPrice: 5499, stock: 500, attributes: { 颜色: '钛空灰', 版本: '12GB+256GB' }, skuImage: '/media/products/product-01-phone.jpg' },
+  { id: 2, productId: 1, skuName: '智选Pro 5G 雪山白 12GB+256GB', price: 4999, originalPrice: 5499, stock: 300, attributes: { 颜色: '雪山白', 版本: '12GB+256GB' }, skuImage: '/media/products/product-01-phone.jpg' },
+  { id: 3, productId: 1, skuName: '智选Pro 5G 钛空灰 16GB+512GB', price: 5499, originalPrice: 5999, stock: 200, attributes: { 颜色: '钛空灰', 版本: '16GB+512GB' }, skuImage: '/media/products/product-01-phone.jpg' },
+  { id: 5, productId: 2, skuName: '畅享Note 5G 幻夜黑 8GB+128GB', price: 1599, originalPrice: 1799, stock: 800, attributes: { 颜色: '幻夜黑', 版本: '8GB+128GB' }, skuImage: '/media/products/product-02-phone.jpg' },
+  { id: 6, productId: 2, skuName: '畅享Note 5G 晨曦金 8GB+128GB', price: 1599, originalPrice: 1799, stock: 600, attributes: { 颜色: '晨曦金', 版本: '8GB+128GB' }, skuImage: '/media/products/product-02-phone.jpg' },
+  { id: 8, productId: 3, skuName: 'Air14 锐龙版 16GB+512GB 银色', price: 4299, originalPrice: 4999, stock: 200, attributes: { 颜色: '银色', 配置: '16GB+512GB' }, skuImage: '/media/products/product-03-laptop.jpg' },
+  { id: 10, productId: 4, skuName: '65W GaN充电器 白色', price: 129, originalPrice: 159, stock: 2000, attributes: { 颜色: '白色' }, skuImage: '/media/products/product-04-charger.jpg' },
+  { id: 11, productId: 5, skuName: 'T恤 白色 L', price: 59, originalPrice: 89, stock: 500, attributes: { 颜色: '白色', 尺码: 'L' }, skuImage: '/media/products/product-05-tshirt.jpg' },
+  { id: 12, productId: 5, skuName: 'T恤 白色 XL', price: 59, originalPrice: 89, stock: 500, attributes: { 颜色: '白色', 尺码: 'XL' }, skuImage: '/media/products/product-05-tshirt.jpg' },
+  { id: 13, productId: 5, skuName: 'T恤 黑色 L', price: 59, originalPrice: 89, stock: 500, attributes: { 颜色: '黑色', 尺码: 'L' }, skuImage: '/media/products/product-05-tshirt.jpg' },
+  { id: 16, productId: 6, skuName: '碎花连衣裙 S', price: 159, originalPrice: 259, stock: 200, attributes: { 颜色: '碎花', 尺码: 'S' }, skuImage: '/media/products/product-06-dress.jpg' },
+  { id: 17, productId: 6, skuName: '碎花连衣裙 M', price: 159, originalPrice: 259, stock: 300, attributes: { 颜色: '碎花', 尺码: 'M' }, skuImage: '/media/products/product-06-dress.jpg' },
+  { id: 19, productId: 7, skuName: '激光投影电视 100英寸', price: 8999, originalPrice: 10999, stock: 50, attributes: { 规格: '100英寸' }, skuImage: '/media/products/product-07-projector.jpg' },
 ]
 
 export const mockBanners = [
-  { id: 1, title: '618大促 全场低至5折', imageUrl: 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?auto=format&fit=crop&w=1600&q=80', linkUrl: '/products', sort: 1 },
-  { id: 2, title: '手机数码 新品首发', imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80', linkUrl: '/products?categoryId=1', sort: 2 },
-  { id: 3, title: '服饰换新 夏日清凉', imageUrl: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?auto=format&fit=crop&w=1600&q=80', linkUrl: '/products?categoryId=3', sort: 3 },
-  { id: 4, title: '家电焕新 以旧换新', imageUrl: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&w=1600&q=80', linkUrl: '/products?categoryId=2', sort: 4 },
+  { id: 1, title: '618大促 全场低至5折', imageUrl: '/media/banners/banner-01-sale.jpg', linkUrl: '/products', sort: 1 },
+  { id: 2, title: '手机数码 新品首发', imageUrl: '/media/banners/banner-02-digital.jpg', linkUrl: '/products?categoryId=1', sort: 2 },
+  { id: 3, title: '服饰换新 夏日清凉', imageUrl: '/media/banners/banner-03-fashion.jpg', linkUrl: '/products?categoryId=3', sort: 3 },
+  { id: 4, title: '家电焕新 以旧换新', imageUrl: '/media/banners/banner-04-appliance.jpg', linkUrl: '/products?categoryId=2', sort: 4 },
 ]
 
 export const mockReviews = [
@@ -96,12 +96,12 @@ export function getInitialOrders() {
 
 export function getInitialOrderItems() {
   return [
-    { id: 1, orderId: 1, productSkuId: 1, productId: 1, productName: '智选 Pro 5G 手机 12GB+256GB 钛空灰', skuName: '智选Pro 5G 钛空灰 12GB+256GB', productImage: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80', quantity: 1, unitPrice: 4999, subtotal: 4999 },
-    { id: 2, orderId: 2, productSkuId: 10, productId: 4, productName: '65W GaN氮化镓充电器 三口快充', skuName: '65W GaN充电器 白色', productImage: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=900&q=80', quantity: 1, unitPrice: 129, subtotal: 129 },
-    { id: 3, orderId: 3, productSkuId: 16, productId: 6, productName: '法式碎花连衣裙 夏季新款', skuName: '碎花连衣裙 S', productImage: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=80', quantity: 1, unitPrice: 159, subtotal: 159 },
-    { id: 4, orderId: 4, productSkuId: 5, productId: 2, productName: '畅享 Note 5G 手机 8GB+128GB 幻夜黑', skuName: '畅享Note 5G 幻夜黑 8GB+128GB', productImage: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80', quantity: 1, unitPrice: 1599, subtotal: 1599 },
-    { id: 5, orderId: 5, productSkuId: 11, productId: 5, productName: '纯棉短袖T恤 男款 100%新疆棉', skuName: 'T恤 白色 L', productImage: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80', quantity: 1, unitPrice: 59, subtotal: 59 },
-    { id: 6, orderId: 6, productSkuId: 8, productId: 3, productName: '轻薄本 Air 14 锐龙版 16GB+512GB', skuName: 'Air14 锐龙版 16GB+512GB 银色', productImage: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=80', quantity: 1, unitPrice: 4299, subtotal: 4299 },
+    { id: 1, orderId: 1, productSkuId: 1, productId: 1, productName: '智选 Pro 5G 手机 12GB+256GB 钛空灰', skuName: '智选Pro 5G 钛空灰 12GB+256GB', productImage: '/media/products/product-01-phone.jpg', quantity: 1, unitPrice: 4999, subtotal: 4999 },
+    { id: 2, orderId: 2, productSkuId: 10, productId: 4, productName: '65W GaN氮化镓充电器 三口快充', skuName: '65W GaN充电器 白色', productImage: '/media/products/product-04-charger.jpg', quantity: 1, unitPrice: 129, subtotal: 129 },
+    { id: 3, orderId: 3, productSkuId: 16, productId: 6, productName: '法式碎花连衣裙 夏季新款', skuName: '碎花连衣裙 S', productImage: '/media/products/product-06-dress.jpg', quantity: 1, unitPrice: 159, subtotal: 159 },
+    { id: 4, orderId: 4, productSkuId: 5, productId: 2, productName: '畅享 Note 5G 手机 8GB+128GB 幻夜黑', skuName: '畅享Note 5G 幻夜黑 8GB+128GB', productImage: '/media/products/product-02-phone.jpg', quantity: 1, unitPrice: 1599, subtotal: 1599 },
+    { id: 5, orderId: 5, productSkuId: 11, productId: 5, productName: '纯棉短袖T恤 男款 100%新疆棉', skuName: 'T恤 白色 L', productImage: '/media/products/product-05-tshirt.jpg', quantity: 1, unitPrice: 59, subtotal: 59 },
+    { id: 6, orderId: 6, productSkuId: 8, productId: 3, productName: '轻薄本 Air 14 锐龙版 16GB+512GB', skuName: 'Air14 锐龙版 16GB+512GB 银色', productImage: '/media/products/product-03-laptop.jpg', quantity: 1, unitPrice: 4299, subtotal: 4299 },
   ]
 }
 

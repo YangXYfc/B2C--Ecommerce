@@ -254,7 +254,40 @@ npm run test:e2e
 .\scripts\verify-vscode-setup.ps1
 ```
 
-## 九、常见问题
+## 九、本地图片与上传文件
+
+项目的演示商品、分类、店铺和轮播图不依赖外网，版本化素材位于：
+
+```text
+backend/src/main/resources/static/media/
+```
+
+数据库只保存 `/media/...` 或 `/upload/...` 形式的相对路径。Spring Boot 会直接提供这两个地址，四个前端也已经配置好开发代理；App 和微信小程序会根据 `VITE_API_BASE_URL` 自动补全图片地址。
+
+新上传的商品主图、相册图、SKU 图、店铺 Logo 和轮播图保存在：
+
+```text
+backend/upload/YYYYMMDD/
+```
+
+上传接口只接受 JPG、JPEG、PNG、WebP，单张最大 5 MB。`backend/upload/` 是运行数据，已被 Git 忽略；换电脑、部署或备份项目时，要单独复制这个目录，否则数据库中的 `/upload/...` 路径仍在，但文件会丢失。
+
+已有数据库升级到本地图片时，不要重建表，执行一次可重复运行的迁移脚本即可：
+
+```sql
+SOURCE E:/你的路径/B2C-Ecommerce/database/migrations/2026-08-24-local-media.sql;
+```
+
+素材来源记录在 `backend/src/main/resources/static/media/SOURCES.md`。如需重新下载版本化演示图片，可在联网环境运行：
+
+```powershell
+.\scripts\download-seed-media.ps1
+.\scripts\verify-local-media.ps1
+```
+
+运行项目本身不会执行下载脚本，也不会访问远程图片域名。
+
+## 十、常见问题
 
 ### 后端提示数据库连接失败
 
@@ -286,7 +319,7 @@ http://localhost:8080/api/categories
 
 确认当前打开的是仓库根目录，并检查 `.vscode/tasks.json` 和 `.vscode/launch.json` 是否存在。然后执行“开发人员：重新加载窗口”。
 
-## 十、相关文档
+## 十一、相关文档
 
 - `B2C 多商家电商平台：任务分工与接口说明.md`：角色分工与接口契约
 - `frontend-user-mobile/README.md`：消费者移动端详细说明

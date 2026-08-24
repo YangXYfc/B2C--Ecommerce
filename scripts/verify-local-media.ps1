@@ -116,4 +116,20 @@ foreach ($contract in $formContracts) {
     }
 }
 
+$frontendSourceRoots = @(
+    'frontend-user-web/src',
+    'frontend-user-mobile/src',
+    'frontend-merchant/src',
+    'frontend-admin/src'
+)
+foreach ($sourceRoot in $frontendSourceRoots) {
+    $absoluteRoot = Join-Path $repositoryRoot $sourceRoot
+    $remoteMatch = Get-ChildItem -LiteralPath $absoluteRoot -Recurse -File -Include *.js,*.ts,*.vue,*.json |
+        Select-String -Pattern 'images\.unsplash\.com|img\.jd-demo\.com' |
+        Select-Object -First 1
+    if ($remoteMatch) {
+        throw "Remote seed/mock image remains in frontend source: $($remoteMatch.Path):$($remoteMatch.LineNumber)"
+    }
+}
+
 Write-Host "Local media verification passed: $verified files checked."

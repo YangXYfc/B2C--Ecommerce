@@ -1,5 +1,6 @@
 import {
   normalizeCart,
+  normalizeMediaTree,
   normalizeMerchantApplication,
   normalizeOrder,
   normalizePage,
@@ -12,7 +13,14 @@ import { request } from './request.js'
 import { createMockService } from './mock/service.js'
 import { createUniStorage } from '../utils/storage.js'
 
-const mock = createMockService(createUniStorage('yuexuan'))
+const rawMock = createMockService(createUniStorage('yuexuan'))
+const mock = new Proxy(rawMock, {
+  get(target, property) {
+    const value = target[property]
+    if (typeof value !== 'function') return value
+    return async (...args) => normalizeMediaTree(await value.apply(target, args))
+  },
+})
 const useMock = import.meta.env.VITE_DATA_MODE === 'mock'
 
 const real = {
