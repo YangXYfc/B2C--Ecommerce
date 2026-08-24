@@ -1,0 +1,59 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "后端（Spring Boot）",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": ".\\mvnw.cmd spring-boot:run",
+      "cwd": "${workspaceFolder}\\backend"
+    },
+    {
+      "name": "消费者 Web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --port 5173 --strictPort",
+      "cwd": "${workspaceFolder}\\frontend-user-web"
+    },
+    {
+      "name": "消费者移动端 H5",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev:h5 -- --port 5174 --strictPort",
+      "cwd": "${workspaceFolder}\\frontend-user-mobile"
+    },
+    {
+      "name": "微信小程序编译",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev:mp-weixin",
+      "cwd": "${workspaceFolder}\\frontend-user-mobile"
+    },
+    {
+      "name": "商家端",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --port 5175 --strictPort",
+      "cwd": "${workspaceFolder}\\frontend-merchant"
+    },
+    {
+      "name": "管理端",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --port 5176 --strictPort",
+      "cwd": "${workspaceFolder}\\frontend-admin"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "全栈：后端 + 消费者移动端",
+      "configurations": ["后端（Spring Boot）", "消费者移动端 H5"],
+      "stopAll": true
+    },
+    {
+      "name": "全栈：后端 + 全部 Web 前端",
+      "configurations": ["后端（Spring Boot）", "消费者 Web", "消费者移动端 H5", "商家端", "管理端"],
+      "stopAll": true
+    }
+  ]
+}
