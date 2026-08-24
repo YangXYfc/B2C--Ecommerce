@@ -1,3 +1,21 @@
+import { resolveMediaUrl } from '../utils/media.js'
+
+const mediaKeys = new Set([
+  'avatar', 'icon', 'image', 'images', 'imageUrl', 'licenseImage', 'mainImage',
+  'productImage', 'shopLogo', 'skuImage', 'subImages',
+])
+
+export function normalizeMediaTree(value, key = '') {
+  if (Array.isArray(value)) return value.map((item) => normalizeMediaTree(item, key))
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([childKey, childValue]) => [childKey, normalizeMediaTree(childValue, childKey)]),
+    )
+  }
+  if (mediaKeys.has(key) && (typeof value === 'string' || value == null)) return resolveMediaUrl(value)
+  return value
+}
+
 export function unwrapResult(response) {
   if (response == null) return response
   if (Object.prototype.hasOwnProperty.call(response, 'code')) {

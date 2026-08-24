@@ -20,7 +20,7 @@ export async function getProfile() {
       id: 2,
       username: 'merchant1',
       nickname: '数码旗舰店',
-      avatar: 'https://img.jd-demo.com/shop/logo1.png',
+      avatar: '/media/shops/shop-01-digital.jpg',
       role: 'MERCHANT',
     },
   }

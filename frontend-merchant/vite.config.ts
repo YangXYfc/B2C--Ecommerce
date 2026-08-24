@@ -19,6 +19,14 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
       },
+      '/media': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/upload': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
     },
   },
 })

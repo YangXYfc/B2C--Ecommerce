@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getShop, updateShop } from '@/api/shop'
 import { ElMessage } from 'element-plus'
+import ImageUploader from '@/components/ImageUploader.vue'
 
 const formRef = ref()
 const form = ref({ shopName: '', shopLogo: '', description: '', contactPhone: '' })
@@ -32,8 +33,8 @@ async function handleSave() {
       <el-form-item label="店铺名称" prop="shopName" :rules="[{ required: true, message: '请输入店铺名称' }]">
         <el-input v-model="form.shopName" />
       </el-form-item>
-      <el-form-item label="店铺Logo URL" prop="shopLogo">
-        <el-input v-model="form.shopLogo" placeholder="输入图片URL" />
+      <el-form-item label="店铺 Logo" prop="shopLogo">
+        <ImageUploader v-model="form.shopLogo" />
       </el-form-item>
       <el-form-item label="店铺描述" prop="description">
         <el-input v-model="form.description" type="textarea" :rows="3" />

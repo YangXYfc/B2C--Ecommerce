@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title">
+  <title id="title">悦选品牌标志</title>
+  <defs>
+    <linearGradient id="bag" x1="18" y1="12" x2="78" y2="86" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff625f"/>
+      <stop offset="1" stop-color="#e4393c"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="88" height="88" rx="26" fill="#fff2f1"/>
+  <path d="M23 34h50l-4 43H27l-4-43Z" fill="url(#bag)"/>
+  <path d="M36 37v-7c0-8 5-14 12-14s12 6 12 14v7" fill="none" stroke="#e4393c" stroke-width="6" stroke-linecap="round"/>
+  <path d="M36 53c3 7 8 11 12 11s9-4 12-11" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="35" cy="49" r="2.5" fill="#fff"/>
+  <circle cx="61" cy="49" r="2.5" fill="#fff"/>
+</svg>

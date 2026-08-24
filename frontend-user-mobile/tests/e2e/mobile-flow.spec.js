@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test'
+import { blockExternalImages } from './support/network.js'
 
 const baseUrl = process.env.E2E_BASE_URL || 'http://127.0.0.1:5173'
 
 test.use({ viewport: { width: 390, height: 844 }, locale: 'zh-CN' })
 
 test('consumer can search, open a product, add it to cart, and reach checkout', async ({ page }) => {
+  await blockExternalImages(page)
   await page.goto(`${baseUrl}/#/pages/auth/login`)
   const loginResponse = page.waitForResponse((response) => response.url().endsWith('/api/auth/login'))
   await page.locator('.primary-button').click()
@@ -13,6 +15,9 @@ test('consumer can search, open a product, add it to cart, and reach checkout', 
 
   await page.goto(baseUrl)
   await expect(page.getByText('发现你的生活好物')).toBeVisible()
+  const featuredImage = page.getByTestId('featured-product-image').locator('img')
+  await expect(featuredImage).toHaveAttribute('src', /\/media\//)
+  expect(await featuredImage.evaluate((image) => image.naturalWidth)).toBeGreaterThan(0)
 
   await page.locator('.search input').fill('手机')
   await page.locator('.search-action').click()

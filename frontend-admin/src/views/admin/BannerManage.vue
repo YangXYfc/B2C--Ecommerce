@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getBannerList, createBanner, updateBanner, deleteBanner } from '@/api/banner'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import ImageUploader from '@/components/ImageUploader.vue'
 
 const list = ref<any[]>([])
 const loading = ref(false)
@@ -93,8 +94,8 @@ onMounted(fetchData)
         <el-form-item label="标题" prop="title" :rules="[{ required: true }]">
           <el-input v-model="form.title" />
         </el-form-item>
-        <el-form-item label="图片URL" prop="imageUrl" :rules="[{ required: true }]">
-          <el-input v-model="form.imageUrl" />
+        <el-form-item label="横幅图片" prop="imageUrl" :rules="[{ required: true, message: '请上传横幅图片' }]">
+          <ImageUploader v-model="form.imageUrl" />
         </el-form-item>
         <el-form-item label="跳转链接" prop="linkUrl">
           <el-input v-model="form.linkUrl" />
