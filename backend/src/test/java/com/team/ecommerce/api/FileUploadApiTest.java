@@ -16,9 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * 图片上传接口集成测试（契约 4.3）。
@@ -26,9 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 class FileUploadApiTest extends AbstractApiTest {
 
-    /** URL 形如 http://localhost/upload/20260812/<32位hex>.png */
+    /** URL 形如 /upload/20260812/<32位hex>.png */
     private static final Pattern URL_PATTERN =
-            Pattern.compile("^http://localhost/upload/\\d{8}/[0-9a-f]{32}\\.png$");
+            Pattern.compile("^/upload/\\d{8}/[0-9a-f]{32}\\.png$");
 
     /** 记录本次测试创建的文件相对路径，@AfterEach 删除。 */
     private final List<String> created = new ArrayList<>();
@@ -46,8 +52,17 @@ class FileUploadApiTest extends AbstractApiTest {
         MvcResult result = expectOk(doUpload(tokenOf(MERCHANT1), image("a.png")))
                 .andExpect(jsonPath("$.message").value("上传成功"))
                 .andExpect(jsonPath("$.data.url").value(matchesPattern(URL_PATTERN)))
+                .andExpect(jsonPath("$.data.url").value(startsWith("/upload/")))
+                .andExpect(jsonPath("$.data.url").value(not(containsString("http"))))
                 .andReturn();
         track(result);
+    }
+
+    @Test
+    void seedMedia_isPubliclyServedAsImage() throws Exception {
+        mockMvc.perform(get("/media/common/placeholder.webp"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", startsWith("image/")));
     }
 
     @Test

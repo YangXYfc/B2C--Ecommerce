@@ -51,7 +51,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/register", "/api/auth/login",
                         "/api/categories", "/api/products", "/api/products/*",
-                        "/api/products/*/reviews", "/api/banners", "/upload/**");
+                        "/api/products/*/reviews", "/api/banners", "/media/**", "/upload/**");
     }
 
     /** 上传目录静态资源映射：/upload/** → file:{upload.dir}/，访问无需 JWT。 */
