@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { getProductDetail, createProduct, updateProduct } from '@/api/product'
 import { getCategories } from '@/api/category'
 import { ElMessage } from 'element-plus'
+import ImageUploader from '@/components/ImageUploader.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,7 +15,7 @@ const categories = ref<any[]>([])
 
 const form = ref({
   name: '', subtitle: '', categoryId: null as number | null, mainImage: '',
-  description: '', detailHtml: '',
+  subImages: [] as string[], description: '', detailHtml: '',
 })
 
 const skuList = ref([{ skuName: '', price: 0, originalPrice: 0, stock: 0, attributes: {} as Record<string, string>, skuImage: '' }])
@@ -28,7 +29,11 @@ onMounted(async () => {
     isEdit.value = true
     const res: any = await getProductDetail(Number(id))
     const d = res.data
-    form.value = { categoryId: d.categoryId, name: d.name, subtitle: d.subtitle, mainImage: d.mainImage, description: d.description || '', detailHtml: d.detailHtml || '' }
+    form.value = {
+      categoryId: d.categoryId, name: d.name, subtitle: d.subtitle, mainImage: d.mainImage,
+      subImages: Array.isArray(d.subImages) ? d.subImages : [],
+      description: d.description || '', detailHtml: d.detailHtml || '',
+    }
     if (d.skus?.length) {
       skuList.value = d.skus.map((s: any) => ({
         skuName: s.skuName, price: s.price, originalPrice: s.originalPrice || 0,
@@ -73,20 +78,29 @@ async function handleSubmit() {
           <el-option v-for="c in categories" :key="c.id" :label="c.name" :value="c.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="主图URL" prop="mainImage" :rules="[{ required: true, message: '请输入主图URL' }]">
-        <el-input v-model="form.mainImage" placeholder="输入图片URL" />
+      <el-form-item label="商品主图" prop="mainImage" :rules="[{ required: true, message: '请上传商品主图' }]">
+        <ImageUploader v-model="form.mainImage" />
+      </el-form-item>
+      <el-form-item label="商品相册" prop="subImages">
+        <ImageUploader v-model="form.subImages" multiple :limit="6" />
       </el-form-item>
       <el-form-item label="描述" prop="description">
         <el-input v-model="form.description" type="textarea" :rows="3" />
       </el-form-item>
 
       <el-divider>商品规格 (SKU，价格取最低 SKU 售价)</el-divider>
-      <div v-for="(sku, idx) in skuList" :key="idx" style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
-        <el-input v-model="sku.skuName" placeholder="规格名称" style="width:160px" />
-        <el-input-number v-model="sku.price" :min="0" :precision="2" placeholder="售价" />
-        <el-input-number v-model="sku.originalPrice" :min="0" :precision="2" placeholder="原价" />
-        <el-input-number v-model="sku.stock" :min="0" placeholder="库存" />
-        <el-button v-if="skuList.length > 1" type="danger" circle size="small" @click="removeSku(idx)">删</el-button>
+      <div v-for="(sku, idx) in skuList" :key="idx" class="sku-card">
+        <div class="sku-fields">
+          <el-input v-model="sku.skuName" placeholder="规格名称" style="width:160px" />
+          <el-input-number v-model="sku.price" :min="0" :precision="2" placeholder="售价" />
+          <el-input-number v-model="sku.originalPrice" :min="0" :precision="2" placeholder="原价" />
+          <el-input-number v-model="sku.stock" :min="0" placeholder="库存" />
+          <el-button v-if="skuList.length > 1" type="danger" circle size="small" @click="removeSku(idx)">删</el-button>
+        </div>
+        <div class="sku-image-row">
+          <span>规格图片</span>
+          <ImageUploader v-model="sku.skuImage" />
+        </div>
       </div>
       <el-button type="primary" plain @click="addSku" style="margin-bottom:20px">+ 添加规格</el-button>
 
@@ -97,3 +111,9 @@ async function handleSubmit() {
     </el-form>
   </div>
 </template>
+
+<style scoped>
+.sku-card { margin-bottom: 14px; padding: 14px; border: 1px solid #ebeef5; border-radius: 10px; background: #fafafa; }
+.sku-fields { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.sku-image-row { display: flex; align-items: flex-start; gap: 16px; margin-top: 14px; color: #606266; font-size: 14px; }
+</style>

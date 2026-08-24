@@ -78,4 +78,42 @@ if ($migrationText -match 'oi\.product_id') {
     throw 'Order item migration references the nonexistent order_item.product_id column.'
 }
 
+$uploadContracts = @(
+    @{ Api = 'frontend-merchant/src/api/file.ts'; Component = 'frontend-merchant/src/components/ImageUploader.vue' },
+    @{ Api = 'frontend-admin/src/api/file.ts'; Component = 'frontend-admin/src/components/ImageUploader.vue' }
+)
+foreach ($contract in $uploadContracts) {
+    $apiPath = Join-Path $repositoryRoot $contract.Api
+    $componentPath = Join-Path $repositoryRoot $contract.Component
+    if (-not (Test-Path -LiteralPath $apiPath -PathType Leaf)) {
+        throw "Missing frontend upload API: $($contract.Api)"
+    }
+    if (-not (Test-Path -LiteralPath $componentPath -PathType Leaf)) {
+        throw "Missing reusable image uploader: $($contract.Component)"
+    }
+
+    $apiText = Get-Content -Raw -LiteralPath $apiPath
+    if ($apiText -notmatch "body\.append\('file'" -or $apiText -notmatch '/files/images') {
+        throw "Frontend upload API does not satisfy the multipart contract: $($contract.Api)"
+    }
+}
+
+$formContracts = @(
+    @{ Path = 'frontend-merchant/src/views/merchant/ProductForm.vue'; Required = @('ImageUploader', 'subImages', 'skuImage') },
+    @{ Path = 'frontend-merchant/src/views/merchant/ShopSettings.vue'; Required = @('ImageUploader', 'shopLogo') },
+    @{ Path = 'frontend-admin/src/views/admin/BannerManage.vue'; Required = @('ImageUploader', 'imageUrl') }
+)
+foreach ($contract in $formContracts) {
+    $formPath = Join-Path $repositoryRoot $contract.Path
+    $formText = Get-Content -Raw -LiteralPath $formPath
+    foreach ($requiredText in $contract.Required) {
+        if ($formText -notmatch [regex]::Escape($requiredText)) {
+            throw "Image upload form contract is missing '$requiredText': $($contract.Path)"
+        }
+    }
+    if ($formText -match '主图URL|Logo URL|图片URL|输入图片URL') {
+        throw "Image upload form still asks users to type a URL: $($contract.Path)"
+    }
+}
+
 Write-Host "Local media verification passed: $verified files checked."
