@@ -1,6 +1,6 @@
-# B2C 多商家电商平台
+# 悦选生活多商家 B2C 电商平台
 
-这是一个课程项目，实现平台统一监管、多个商家入驻和消费者购买的 B2C 商城。仓库包含 Spring Boot 后端、消费者 Web、消费者移动端（Android/微信小程序代码）、商家端和平台管理端。
+“悦选生活”是一个多商家 B2C 电商课程项目，实现平台统一监管、多个商家入驻和消费者购买。仓库包含 Spring Boot 后端、悦选生活商城 Web、悦选生活移动端（Android/微信小程序代码）、悦选生活商家中心和悦选生活平台管理端。
 
 ## 快速开始
 
@@ -321,7 +321,7 @@ http://localhost:8080/api/categories
 
 ## 十一、相关文档
 
-- `B2C 多商家电商平台：任务分工与接口说明.md`：角色分工与接口契约
+- `悦选生活多商家电商平台：任务分工与接口说明.md`：角色分工与接口契约
 - `frontend-user-mobile/README.md`：消费者移动端详细说明
 - `docs/e-role-backend-skeleton.md`：后端骨架交接说明
 - `database/schema.sql`、`database/data.sql`：权威 MySQL 脚本

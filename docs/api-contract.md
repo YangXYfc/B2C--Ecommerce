@@ -1,7 +1,7 @@
 # D 后端接口说明（API 契约）
 
 > 开发者 D 负责：账号、商家、商品后端。本文档是 D 全部接口的契约，A/B/C 前端按此联调。
-> 参考：`../backend/.claude/docs/B2C 多商家电商平台：任务分工与接口说明.md`、`../database/schema.sql`。
+> 参考：`../悦选生活多商家电商平台：任务分工与接口说明.md`、`../database/schema.sql`。
 
 ---
 

@@ -20,4 +20,4 @@ These Unsplash photo IDs already appeared in `database/data.sql` and were retain
 
 The other category thumbnails reuse a matching versioned product photograph at a square crop. Product SKUs, order snapshots and review examples reuse the corresponding product media paths rather than duplicating files.
 
-`common/brand-mark.svg` is an original project asset created for the 悦选 consumer app and is not downloaded from a third party.
+`common/brand-mark.svg` is an original project asset created for the 悦选生活 consumer app and is not downloaded from a third party.

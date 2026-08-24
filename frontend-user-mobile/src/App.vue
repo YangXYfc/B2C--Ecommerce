@@ -1,7 +1,7 @@
 <script>
 export default {
   onLaunch() {
-    console.info('悦选移动端已启动')
+    console.info('悦选生活移动端已启动')
   },
 }
 </script>

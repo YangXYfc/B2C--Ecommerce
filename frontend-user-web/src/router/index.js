@@ -48,7 +48,7 @@ router.beforeEach(async (to) => {
     await userStore.fetchProfile()
   }
 
-  document.title = `${to.meta.title || '商城'} - 京东风格商城`
+  document.title = `${to.meta.title || '商城'} - 悦选生活`
 })
 
 export default router

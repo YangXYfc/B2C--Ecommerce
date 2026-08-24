@@ -33,7 +33,7 @@ function handleLogout() {
   <div class="admin-layout">
     <div class="admin-sidebar">
       <div class="sidebar-logo">
-        🏪 商家后台
+        🏪 悦选生活商家中心
       </div>
       <el-menu
         :default-active="activeMenu"

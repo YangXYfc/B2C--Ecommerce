@@ -1,7 +1,7 @@
 <template>
   <footer class="app-footer">
     <div class="page-container">
-      <p>B2C 多商家电商平台 · 课程作业演示项目</p>
+      <p>悦选生活 · 多商家品质购物平台</p>
       <p class="footer-sub">测试账号：user1 / 123456</p>
     </div>
   </footer>

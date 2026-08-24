@@ -2,9 +2,9 @@
   <view class="brand-header">
     <view class="brand-line">
       <image class="brand-mark" :src="brandMark" mode="aspectFit" />
-      <text class="brand-name">悦选</text>
+      <text class="brand-name">悦选生活</text>
       <text class="brand-divider">｜</text>
-      <text class="brand-slogan">发现你的生活好物</text>
+      <text class="brand-slogan">悦享好物，精选生活</text>
     </view>
     <view class="search" @tap="submit">
       <input v-model="keyword" confirm-type="search" placeholder="搜索商品" @confirm="submit" />
