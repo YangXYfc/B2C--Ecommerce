@@ -42,4 +42,40 @@ foreach ($relativePath in $requiredFiles) {
     $verified++
 }
 
+$seedFiles = @(
+    'database/data.sql',
+    'backend/src/main/resources/data-h2.sql',
+    'database/migrations/2026-08-24-local-media.sql'
+)
+foreach ($seedFile in $seedFiles) {
+    $seedPath = Join-Path $repositoryRoot $seedFile
+    if (-not (Test-Path -LiteralPath $seedPath -PathType Leaf)) {
+        throw "Missing local media SQL file: $seedFile"
+    }
+    $seedText = Get-Content -Raw -LiteralPath $seedPath
+    if ($seedText -match 'images\.unsplash\.com|img\.jd-demo\.com') {
+        throw "Remote image URL remains in seed data: $seedFile"
+    }
+
+    $mediaPaths = [regex]::Matches(
+        $seedText,
+        '/media/[A-Za-z0-9_./-]+\.(?:jpg|jpeg|png|webp)'
+    ) | ForEach-Object { $_.Value } | Sort-Object -Unique
+    foreach ($mediaPath in $mediaPaths) {
+        $assetPath = Join-Path $mediaRoot $mediaPath.Substring('/media/'.Length)
+        if (-not (Test-Path -LiteralPath $assetPath -PathType Leaf)) {
+            throw "SQL references a missing local media asset: $mediaPath in $seedFile"
+        }
+    }
+}
+
+$migrationPath = Join-Path $repositoryRoot 'database/migrations/2026-08-24-local-media.sql'
+$migrationText = Get-Content -Raw -LiteralPath $migrationPath
+if ($migrationText -notmatch 'ps\.id\s*=\s*oi\.product_sku_id') {
+    throw 'Order item migration must resolve product media through product_sku_id.'
+}
+if ($migrationText -match 'oi\.product_id') {
+    throw 'Order item migration references the nonexistent order_item.product_id column.'
+}
+
 Write-Host "Local media verification passed: $verified files checked."
