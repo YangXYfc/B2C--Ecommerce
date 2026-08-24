@@ -1,0 +1,158 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "启动后端",
+      "type": "shell",
+      "command": ".\\mvnw.cmd",
+      "args": ["spring-boot:run"],
+      "options": { "cwd": "${workspaceFolder}\\backend" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "services" }
+    },
+    {
+      "label": "启动消费者 Web",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev", "--", "--port", "5173", "--strictPort"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-web" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "services" }
+    },
+    {
+      "label": "启动消费者移动端 H5",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev:h5", "--", "--port", "5174", "--strictPort"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-mobile" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "services" }
+    },
+    {
+      "label": "启动微信小程序编译",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev:mp-weixin"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-mobile" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "services" }
+    },
+    {
+      "label": "启动商家端",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev", "--", "--port", "5175", "--strictPort"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-merchant" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "services" }
+    },
+    {
+      "label": "启动管理端",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev", "--", "--port", "5176", "--strictPort"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-admin" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "services" }
+    },
+    {
+      "label": "一键启动全部 Web 服务",
+      "dependsOrder": "parallel",
+      "dependsOn": ["启动后端", "启动消费者 Web", "启动消费者移动端 H5", "启动商家端", "启动管理端"],
+      "problemMatcher": []
+    },
+    {
+      "label": "依赖：消费者 Web",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-web" },
+      "problemMatcher": []
+    },
+    {
+      "label": "依赖：消费者移动端",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-mobile" },
+      "problemMatcher": []
+    },
+    {
+      "label": "依赖：商家端",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-merchant" },
+      "problemMatcher": []
+    },
+    {
+      "label": "依赖：管理端",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-admin" },
+      "problemMatcher": []
+    },
+    {
+      "label": "安装全部前端依赖",
+      "dependsOrder": "sequence",
+      "dependsOn": ["依赖：消费者 Web", "依赖：消费者移动端", "依赖：商家端", "依赖：管理端"],
+      "problemMatcher": []
+    },
+    {
+      "label": "运行后端测试",
+      "type": "shell",
+      "command": ".\\mvnw.cmd",
+      "args": ["test"],
+      "options": { "cwd": "${workspaceFolder}\\backend" },
+      "group": "test",
+      "problemMatcher": ["$javac"]
+    },
+    {
+      "label": "构建：消费者 Web",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-web" },
+      "problemMatcher": []
+    },
+    {
+      "label": "构建：消费者移动端 H5",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build:h5"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-mobile" },
+      "problemMatcher": []
+    },
+    {
+      "label": "构建：微信小程序",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build:mp-weixin"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-user-mobile" },
+      "problemMatcher": []
+    },
+    {
+      "label": "构建：商家端",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-merchant" },
+      "problemMatcher": []
+    },
+    {
+      "label": "构建：管理端",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "options": { "cwd": "${workspaceFolder}\\frontend-admin" },
+      "problemMatcher": []
+    },
+    {
+      "label": "构建全部前端",
+      "dependsOrder": "parallel",
+      "dependsOn": ["构建：消费者 Web", "构建：消费者移动端 H5", "构建：微信小程序", "构建：商家端", "构建：管理端"],
+      "problemMatcher": []
+    }
+  ]
+}
